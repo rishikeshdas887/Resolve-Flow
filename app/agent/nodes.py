@@ -43,7 +43,15 @@ def make_nodes(deps: AgentDeps):
                         "supporting_actions": [],
                     },
                 }
-            if ticket.status == TicketStatus.new:
+            # A run moves the ticket to processing regardless of which open
+            # state it started from — otherwise e.g. a needs_information ticket
+            # that is reprocessed after the customer replies can never reach
+            # resolved (needs_information -> resolved is an invalid transition).
+            if ticket.status in (
+                TicketStatus.new,
+                TicketStatus.needs_information,
+                TicketStatus.escalated,
+            ):
                 transition_ticket(db, ticket, TicketStatus.processing, reason="run started", actor_id=None)
             record_event(db, ticket.id, "run_started", {"run_id": state["run_id"]}, run_id=state["run_id"])
             return {"subject": subject, "body": body}

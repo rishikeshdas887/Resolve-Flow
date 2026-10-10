@@ -65,3 +65,13 @@ Honest inventory — everything here is real, not hedged.
 - Multi-turn conversational runs (one run per ticket processing cycle; new
   customer input = new ticket update + new run).
 - Real-time push (SSE/websockets); the contract is poll-based by design.
+
+## Added in the final audit (2026-10-10)
+
+- `/auth/login` has no rate limit — brute-force protection is deferred
+  (request-size caps exist; a rate-limit middleware is future work).
+- The global request-size middleware enforces `Content-Length` only;
+  chunked bodies bypass it, though per-endpoint bounds (upload byte cap,
+  pydantic field lengths) still apply.
+- Runs stuck in `running` after a worker crash are recovered only after
+  `RUN_STALE_SECONDS` (default 600s); faster detection needs heartbeat tracking.

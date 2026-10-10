@@ -45,6 +45,7 @@ class Settings(BaseSettings):
     worker_poll_seconds: float = 2.0
     run_max_attempts: int = 3
     run_retry_backoff_seconds: float = 5.0
+    run_stale_seconds: float = 600.0  # a "running" run older than this is recovered
 
     @field_validator("cors_origins")
     @classmethod

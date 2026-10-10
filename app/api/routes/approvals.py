@@ -3,7 +3,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.core.deps import Pagination, require_approver, require_staff
-from app.core.errors import NotFoundError
+from app.core.errors import ConflictError, NotFoundError
 from app.db.models import ApprovalRequest, ApprovalStatus, User
 from app.db.session import get_db
 from app.schemas.approvals import ApprovalDecision, ApprovalOut
@@ -29,7 +29,10 @@ def list_approvals(
 ) -> Page[ApprovalOut]:
     stmt = select(ApprovalRequest)
     if status_filter:
-        stmt = stmt.where(ApprovalRequest.status == ApprovalStatus(status_filter))
+        try:
+            stmt = stmt.where(ApprovalRequest.status == ApprovalStatus(status_filter))
+        except ValueError as e:
+            raise ConflictError(f"Unknown status filter: {status_filter}") from e
     total = db.scalar(select(func.count()).select_from(stmt.subquery())) or 0
     items = db.execute(
         stmt.order_by(ApprovalRequest.created_at.desc())

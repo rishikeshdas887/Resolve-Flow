@@ -68,6 +68,48 @@ def claim_next_run(db: Session) -> AgentRun | None:
     return run
 
 
+def recover_stale_runs(db: Session, settings) -> int:
+    """Requeue runs stuck in 'running' (e.g. after a worker crash mid-run).
+
+    Node side effects are idempotent, so re-executing the graph on the same
+    thread is safe. Runs past max_attempts are failed and their ticket
+    escalated — never left silently stuck."""
+    cutoff = datetime.now(timezone.utc) - timedelta(seconds=settings.run_stale_seconds)
+    stale = db.execute(
+        select(AgentRun)
+        .where(AgentRun.status == RunStatus.running)
+        .where(AgentRun.started_at < cutoff)
+        .with_for_update(skip_locked=True)
+    ).scalars().all()
+    for run in stale:
+        ticket = db.get(Ticket, run.ticket_id)
+        if run.attempt >= run.max_attempts:
+            run.status = RunStatus.failed
+            run.disposition = RunDisposition.failed
+            run.error = "exceeded max attempts (stale run recovery)"
+            run.finished_at = datetime.now(timezone.utc)
+            if ticket is not None:
+                try:
+                    transition_ticket(
+                        db, ticket, TicketStatus.escalated,
+                        reason="agent run exceeded max attempts",
+                    )
+                except Exception:
+                    logger.exception("could not escalate ticket %s", ticket.id)
+        else:
+            run.status = RunStatus.queued
+            run.next_retry_at = datetime.now(timezone.utc)
+            run.error = f"recovered stale run after attempt {run.attempt}"
+            if ticket is not None:
+                record_event(
+                    db, ticket.id, "run_recovered",
+                    {"attempt": run.attempt}, run_id=run.id,
+                )
+    if stale:
+        db.commit()
+    return len(stale)
+
+
 def _pending_decision(db: Session, run: AgentRun) -> dict | None:
     """If this run is resuming after approval, return the decision payload."""
     approval = db.execute(
@@ -189,6 +231,7 @@ def run_worker(poll_seconds: float | None = None, max_runs: int | None = None) -
             while True:
                 db = session_factory()
                 try:
+                    recover_stale_runs(db, settings)
                     run = claim_next_run(db)
                 finally:
                     db.close()

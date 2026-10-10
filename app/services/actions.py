@@ -254,12 +254,17 @@ def decide_approval(
             run_id=approval.run_id, actor_type="user", actor_id=reviewer_id,
         )
     else:
+        # Revalidate state before allowing resume: the ticket must still be
+        # awaiting this decision and the run must still be paused on it.
+        if ticket is None or ticket.status != TicketStatus.pending_approval:
+            raise ConflictError("Ticket is no longer awaiting this approval")
+        if run is None or run.status != RunStatus.awaiting_approval:
+            raise ConflictError("Run is no longer awaiting approval")
         record_event(
             db, approval.ticket_id, "approval_granted", {"note": (note or "")[:500]},
             run_id=approval.run_id, actor_type="user", actor_id=reviewer_id,
         )
         # Requeue the run so the worker resumes it from the LangGraph checkpoint.
-        if run:
-            run.status = RunStatus.queued
-            run.next_retry_at = None
+        run.status = RunStatus.queued
+        run.next_retry_at = None
     return approval

@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 
 from app.core.config import Settings, get_settings
 from app.core.deps import Pagination, require_admin, require_staff
-from app.core.errors import NotFoundError, ValidationFailedError
-from app.db.models import KnowledgeChunk, KnowledgeDocument, User
+from app.core.errors import ConflictError, NotFoundError, ValidationFailedError
+from app.db.models import DocumentStatus, KnowledgeChunk, KnowledgeDocument, User
 from app.db.session import get_db
 from app.schemas.common import Page, make_page
 from app.schemas.knowledge import ChunkOut, DocumentDetail, DocumentOut
@@ -54,7 +54,10 @@ def list_documents(
 ) -> Page[DocumentOut]:
     stmt = select(KnowledgeDocument)
     if status_filter:
-        stmt = stmt.where(KnowledgeDocument.status == status_filter)
+        try:
+            stmt = stmt.where(KnowledgeDocument.status == DocumentStatus(status_filter))
+        except ValueError as e:
+            raise ConflictError(f"Unknown status filter: {status_filter}") from e
     total = db.scalar(select(func.count()).select_from(stmt.subquery())) or 0
     items = db.execute(
         stmt.order_by(KnowledgeDocument.created_at.desc())

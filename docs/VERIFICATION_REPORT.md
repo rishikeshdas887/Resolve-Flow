@@ -74,3 +74,24 @@ is a rules engine, not a model.
 - Real-model validation: set `OPENAI_API_KEY` + `EMBEDDING_PROVIDER=openai`,
   re-run `pytest` + `evaluate.py` and re-tune retrieval thresholds.
 - Slack end-to-end test once `SLACK_BOT_TOKEN`/`SLACK_SIGNING_SECRET` exist.
+
+## Final audit round (2026-10-10)
+
+Independent re-verification after the final audit (see FINAL_AUDIT_REPORT.md
+for the full requirements matrix and defect dispositions):
+
+| Command | Result |
+|---|---|
+| `alembic upgrade head` on empty `resolveflow_fresh` | PASS — then `downgrade base` + re-upgrade clean |
+| `.venv/bin/ruff check app tests scripts migrations` | PASS |
+| `.venv/bin/python -m pytest tests/ -q` | **75 passed** (69 + 6 audit regressions) |
+| `scripts/evaluate.py --dataset evals/dataset.jsonl` | 32/32 pass, deterministic mode, 36.7ms avg |
+| Tracked-file secret scan | clean |
+
+Defects fixed this round: needs_information reprocessing could not resolve
+(P1), stale `running` runs never recovered (P2), approval could requeue after
+ticket left `pending_approval` (P2), invalid status filters returned 500 (P3),
+missing FTS/claim indexes (P3 — new migration `a1b2c3d4e5f6`).
+
+New limitations documented: no login rate limiting; `Content-Length`-only
+request-size cap; stale-run recovery window is `run_stale_seconds` (600s).
