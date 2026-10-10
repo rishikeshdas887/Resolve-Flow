@@ -111,6 +111,37 @@ Runs the labelled deterministic provider against ~32 designed cases
 faults, duplicate retries, ...) and writes an honest report with per-case
 results. See `docs/VERIFICATION_REPORT.md` for the latest real numbers.
 
+## CI
+
+`.github/workflows/ci.yml` runs on every pull request and push to `main`,
+against a disposable `pgvector/pgvector:pg16` service:
+
+1. `ruff check app tests scripts migrations`
+2. `alembic upgrade head` from an empty database
+3. `alembic downgrade base` + re-upgrade (migration reversibility)
+4. `pytest tests/ -q`
+5. `scripts/evaluate.py --dataset evals/dataset.jsonl` (deterministic mode —
+   no OpenAI or Slack credentials required)
+
+## Verified results (latest run)
+
+- `pytest tests/ -q` — **75 passed**
+- `ruff check` — clean
+- `evaluate.py` — **32/32** eval cases pass (deterministic provider,
+  ~37 ms/case)
+- `alembic upgrade head` from empty DB — clean; downgrade + re-upgrade clean
+- `docker compose up --build` — end-to-end stack verified (ticket → run →
+  evidence → approval → resolve, restart-resumed)
+
+Credentials-dependent paths (live OpenAI provider, Slack delivery) are
+implemented but **not verified** — see `docs/KNOWN_LIMITATIONS.md`.
+
+## Frontend integration
+
+The React frontend (built separately) consumes the versioned `/api/v1`
+contract. `docs/FRONTEND_HANDOFF.md` documents every route, enum, error
+shape, and flow; `/openapi.json` is generated from the live schemas.
+
 ## Docs
 
 - `docs/IMPLEMENTATION_PLAN.md` — phased build plan
