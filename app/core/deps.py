@@ -1,6 +1,7 @@
 """FastAPI dependencies: auth, RBAC, pagination."""
 import jwt
-from fastapi import Depends, Header, Query
+from fastapi import Depends, Query
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
 from app.core.errors import ForbiddenError, UnauthorizedError
@@ -12,13 +13,18 @@ APPROVER_ROLES = {Role.admin}
 STAFF_ROLES = {Role.admin, Role.support_agent}
 
 
+# HTTPBearer registers an `http: bearer` securityScheme in the OpenAPI spec,
+# which makes the Swagger UI Authorize button functional.
+_bearer = HTTPBearer(auto_error=False)
+
+
 def get_current_user(
-    authorization: str | None = Header(default=None),
+    credentials: HTTPAuthorizationCredentials | None = Depends(_bearer),
     db: Session = Depends(get_db),
 ) -> User:
-    if not authorization or not authorization.lower().startswith("bearer "):
+    if credentials is None:
         raise UnauthorizedError("Missing bearer token")
-    token = authorization.split(" ", 1)[1].strip()
+    token = credentials.credentials
     try:
         payload = decode_access_token(token)
     except jwt.PyJWTError as e:
