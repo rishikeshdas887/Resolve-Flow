@@ -1,0 +1,61 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: resolveflow-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-resolveflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-localdev}
+      POSTGRES_DB: ${POSTGRES_DB:-resolveflow}
+    ports:
+      - "55432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-resolveflow} -d ${POSTGRES_DB:-resolveflow}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  migrate:
+    build: .
+    container_name: resolveflow-migrate
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-resolveflow}:${POSTGRES_PASSWORD:-localdev}@db:5432/${POSTGRES_DB:-resolveflow}
+    command: ["alembic", "upgrade", "head"]
+
+  api:
+    build: .
+    container_name: resolveflow-api
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-resolveflow}:${POSTGRES_PASSWORD:-localdev}@db:5432/${POSTGRES_DB:-resolveflow}
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/ready')"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+
+  worker:
+    build: .
+    container_name: resolveflow-worker
+    depends_on:
+      api:
+        condition: service_started
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-resolveflow}:${POSTGRES_PASSWORD:-localdev}@db:5432/${POSTGRES_DB:-resolveflow}
+    command: ["python", "-m", "app.worker"]
+    restart: unless-stopped
+
+volumes:
+  pgdata:
