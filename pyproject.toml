@@ -1,0 +1,29 @@
+[project]
+name = "resolveflow"
+version = "0.1.0"
+description = "Evidence-grounded autonomous customer-support operations backend"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+src = ["."]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B", "S", "ASYNC", "RUF"]
+ignore = [
+    "S101",   # asserts in tests are fine
+    "B008",   # FastAPI Depends defaults
+    "RUF001", "RUF002", "RUF003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "B017"]
+"scripts/**" = ["S311"]
+"migrations/**" = ["E501", "I001", "F401"]
+"evals/**" = ["S311"]
