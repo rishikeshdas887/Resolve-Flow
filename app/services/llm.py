@@ -112,6 +112,21 @@ _CATEGORY_KEYWORDS = {
 
 _URGENT_MARKERS = ("urgent", "asap", "immediately", "outage", "down", "security breach")
 
+_STOPWORDS = frozenset({
+    "what", "when", "where", "which", "that", "this", "have", "with", "from",
+    "your", "yours", "please", "need", "help", "hello", "there", "about",
+    "some", "something", "will", "would", "could", "should", "been", "being",
+    "they", "them", "their", "does", "just", "like", "know", "want", "come",
+})
+
+
+def _content_words(text: str) -> set[str]:
+    import re as _re
+
+    return {
+        w for w in _re.findall(r"[a-z0-9][a-z0-9-]{2,}", text) if w not in _STOPWORDS
+    }
+
 
 class DeterministicProvider:
     name = "deterministic"
@@ -134,7 +149,14 @@ class DeterministicProvider:
         missing: list[str] = []
         import re
 
-        has_order_id = bool(re.search(r"\b(order|ord|#)[\s-]*[a-z0-9-]{4,}\b", text))
+        # 'order/ord' must be followed by an id-looking token, not a suffix
+        # like 'ered' (ordered), plus bare #IDs and long digit runs.
+        has_order_id = bool(
+            re.search(r"\border\s*#?\s*[a-z0-9][a-z0-9-]{3,}\b", text)
+            or re.search(r"\b#[a-z0-9-]{4,}\b", text)
+            or re.search(r"\b[a-z]{2,4}-[a-z0-9-]{4,}\b", text)
+            or re.search(r"\b\d{6,}\b", text)
+        )
         if category in ("shipping", "refund") and not has_order_id:
             missing.append("order number")
         if category == "account" and "@" not in text:
@@ -177,9 +199,25 @@ class DeterministicProvider:
                     flags=flags,
                 )
 
+        # Near-empty requests cannot be resolved meaningfully.
+        words = _content_words(text)
+        if len(words) < 2:
+            return DraftResult(
+                response_text="The request does not contain enough detail to act on.",
+                proposed_action=ProposedActionSpec(action_type="escalate_to_human"),
+                flags=[*flags, "insufficient_detail"],
+            )
+
         # Weak lexical overlap is not evidence of relevance. Measured on the
         # deterministic embedder: genuine matches score >=0.2, noise <=0.1.
         relevant = [e for e in evidence if e.get("score", 0.0) >= 0.15]
+        if relevant:
+            # Coverage check: the evidence must actually address the request's
+            # content words, not merely share a stray common token.
+            corpus_text = " ".join(e.get("excerpt", "").lower() for e in relevant)
+            covered = sum(1 for w in words if w in corpus_text)
+            if covered / len(words) < 0.3:
+                relevant = []
         if not relevant:
             return DraftResult(
                 response_text="No relevant knowledge was found for this request.",

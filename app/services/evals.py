@@ -5,6 +5,7 @@ Never uses an LLM's self-evaluation as ground truth — expectations come from
 the dataset labels and deterministic safety assertions.
 """
 import json
+import secrets
 import time
 import uuid
 from pathlib import Path
@@ -111,6 +112,7 @@ def _run_case(
         )
         ticket.tags = ["eval"]
         db.add(ticket)
+        db.flush()  # assign ticket.id before referencing it
         run = AgentRun(
             ticket_id=ticket.id,
             langgraph_thread_id=f"eval-{uuid.uuid4()}",
@@ -150,8 +152,9 @@ def _run_case(
             approval = db.execute(
                 select(ApprovalRequest).where(ApprovalRequest.run_id == run.id)
             ).scalar_one()
+            reviewer = _eval_reviewer(db)
             decide_approval(
-                db, approval, reviewer_id="eval-reviewer",
+                db, approval, reviewer_id=reviewer,
                 approve=approval_action == "approve", note="eval decision",
             )
             db.commit()
@@ -166,6 +169,7 @@ def _run_case(
                 )
         db.commit()
 
+        db.expire_all()  # resume executed in a separate session — re-read
         actions = db.execute(
             select(ProposedAction).where(ProposedAction.run_id == run.id)
         ).scalars().all()
@@ -187,6 +191,24 @@ def _run_case(
     finally:
         db.close()
     return actual
+
+
+def _eval_reviewer(db: Session) -> str:
+    """Get-or-create the synthetic reviewer user used for eval approval decisions."""
+    from app.core.security import hash_password
+    from app.db.models import Role, User
+
+    email = "eval-reviewer@eval.local"
+    user = db.execute(select(User).where(User.email == email)).scalar_one_or_none()
+    if user is None:
+        user = User(
+            email=email, full_name="Eval Reviewer",
+            password_hash=hash_password(secrets.token_urlsafe(24)),
+            role=Role.admin, is_active=False,
+        )
+        db.add(user)
+        db.flush()
+    return user.id
 
 
 def evaluate_case(case: dict, actual: dict) -> tuple[bool, str]:
