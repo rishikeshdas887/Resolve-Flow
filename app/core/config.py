@@ -19,7 +19,10 @@ class Settings(BaseSettings):
     environment: str = "dev"  # dev | test | prod
 
     # CORS
-    cors_origins: str = "http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:5173"
+    cors_origins: str = (
+        "http://localhost:3000,http://localhost:5173,http://127.0.0.1:3000,http://127.0.0.1:5173,"
+        "https://frontend-three-bice-94.vercel.app,https://frontend-oos8pnhe9-rishidas887s-projects.vercel.app"
+    )
 
     # LLM
     llm_provider: str = "auto"  # auto | deterministic | openai
