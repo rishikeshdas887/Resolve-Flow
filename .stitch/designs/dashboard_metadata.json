@@ -1,0 +1,347 @@
+{
+  "screenshot": {
+    "name": "projects/16037386457659756730/files/c1b3e0acfba44f2484389aaee59baea8",
+    "downloadUrl": "https://lh3.googleusercontent.com/aida/AEtjO1VqXqESTgvxDWZMtSaVnS_Yn8IrZxFc0j6SaWWV7mOfRo-rMXqEiGukch2SsRjbgW9J78fgzJeGTN855r2vAMX3K5MZVBX0Yyc1rLyECHsRGAWMFDLlZEVYanseS89df41_aPHQj32Z4xFCRxKV_MlMoasF6ylmwyf89NGzP8puwzE95nijsMVeFKE-nMtSZHOuybNePq8LSF6QJEzzMzM6ChQ0DVKcDhYFO43XvKDDXW0fxM2MR4NFnoOW"
+  },
+  "htmlCode": {
+    "name": "projects/16037386457659756730/files/297383271dcf42e0adacebe1d08ddeac",
+    "downloadUrl": "https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sXzQ0OTkxYmNmZjdjNTRjM2Q5YzgwNzI5NjEzM2E4NmE3EgsSBxCno6vrwBMYAZIBJAoKcHJvamVjdF9pZBIWQhQxNjAzNzM4NjQ1NzY1OTc1NjczMA&filename=&opi=96797242",
+    "mimeType": "text/html"
+  },
+  "id": "529ee7aaa6de4261865b9e66b8b9677c",
+  "generatedBy": "figaro_agent",
+  "width": "2560",
+  "height": "2342",
+  "title": "ResolveFlow Operations Dashboard",
+  "prompt": "Create a high-density, ultra-refined enterprise AI customer-support operations dashboard named ResolveFlow Operations Dashboard.\n\nDevice: Desktop (1440px+ width).\nAesthetic: Professional dark mode enterprise console (slate-950 base #090d16 / #0f172a, card containers #131b2e / #1e293b, borders #23314d / #334155, primary indigo #6366f1, cyan #22d3ee, emerald #10b981, amber #f59e0b, rose #f43f5e). Clean typographic hierarchy, sharp data density, subtle glows, and micro-interactions.\n\nLayout Structure:\n1. Top Navigation Bar:\n   - Brand: ResolveFlow icon mark (geometric AI node logo) + \"ResolveFlow\" title + \"OPS v2.4\" subtle tag.\n   - Global Search input (Cmd+K) with placeholder \"Search tickets, trace IDs, policy rules, customer UUIDs...\".\n   - Navigation Tabs: Dashboard (active, with indigo bottom pill/indicator), Tickets, Approvals (with \"14\" amber badge), Knowledge, Audit, Evals.\n   - Right controls: Live System Status badge (pulsing emerald dot \"All Agents Operational \u2022 99.98% SLA\"), Environment switcher (\"Production \u2022 US-East\"), notification bell with unread badge, and Lead Incident Commander / Ops Lead profile badge (\"Sarah Chen \u2022 Lead Ops Commander\").\n\n2. Subheader / Control Bar:\n   - Page title \"Incident & Support Autonomous Operations\" with subtitle \"Real-time orchestration across 18 autonomous resolution agents and human-in-the-loop escalation queues\".\n   - Time filter pills: [15m] [1h] [24h - selected] [7d] [Custom].\n   - Quick action buttons: \"Pause Auto-Resolutions\", \"Simulate Load\", and primary \"+ Deploy Agent Routine\" with indigo glow.\n\n3. Metric Stat Cards Grid (5 responsive metric cards):\n   - Card 1: Total Tickets: \"128,420\" (+12.4% vs yesterday, sparkline mini-trend, 24h volume).\n   - Card 2: Open Tickets: \"1,842\" (64 active in autonomous pipeline, 18 human review).\n   - Card 3: Pending Approvals (Amber Highlighted border and soft amber glow): \"47\" tickets requiring human sign-off (Financial refund > $250, Account takeover dispute, SLA urgent). Includes \"Review Queue (14 High Priority)\" action link.\n   - Card 4: Resolved Tickets & Auto-Resolution Rate: \"125,910\" with standout highlight badge \"87.4% Auto-Resolution Rate\" (+3.2% week-over-week efficiency gain), avg resolution time 42s.\n   - Card 5: Active Knowledge Base: \"4,218 Docs\" with \"99.4% Retrieval Precision\", 12 pending embeddings updates.\n\n4. Main Content Split Layout:\n   - Left / Main Area (approx 70% width): Live Ticket Queue\n     * Header with table search bar, view filters (All, Escalated, Pending Approval, Tier-1 Auto, VIP Enterprise), filter tags (Priority: High/Critical, Agent: Claude 3.5 Sonnet / GPT-4o), and \"Auto-refresh: 5s\" live indicator.\n     * Table columns:\n       - Ticket ID & Customer (e.g. #TK-9842 \u2022 Stripe Connect Billing mismatch \u2022 Enterprise / FinTech)\n       - AI Agent & Model (e.g. Agent \"Billing-Flow-v3\" [Claude-3.5], \"Auth-Shield\" [GPT-4o])\n       - Status badge (pills with colored dots):\n         * \"Escalated\" (rose-500 badge)\n         * \"Pending Approval\" (amber-400 badge)\n         * \"Processing\" (indigo-400 animated pulse badge)\n         * \"Resolved\" (emerald-400 badge)\n         * \"New\" (sky-400 badge)\n       - Priority badge: Critical (rose), High (orange), Medium (yellow), Low (slate).\n       - Category tags: [Billing], [Auth], [API Rate Limit], [Subscription], [Data Privacy].\n       - Latency & Confidence score: e.g. \"98.2% conf \u2022 1.2s\", \"74.1% conf \u2022 requires supervisor\".\n       - Timestamp: \"12s ago\", \"48s ago\", \"2m ago\", etc.\n       - Actions: \"Inspect Trace\", \"Quick Approve\", \"Take Over\" icons/buttons.\n     * Includes 6-7 realistic, enterprise-grade mock rows showcasing diverse situations (e.g., enterprise refund exception, API credential rotation assistance, webhook retry failure, automated plan upgrade).\n     * Table footer with pagination, total count (Showing 1-7 of 1,842 live queue items), and batch actions.\n\n   - Right Area (approx 30% width): Real-Time Inspector Side Panel\n     * Panel Tab / Section 1: \"Real-time Agent Execution Feed\"\n       - Live streaming timeline trace of active agent decisions:\n         * Step 1: Agent `Router-Alpha` identified ticket #TK-9844 intent as `High-Value Refund Request` (confidence: 0.99)\n         * Step 2: Retrieved 3 context vectors from `Pinecone / refund-policy-v4` (similarity: 0.94)\n         * Step 3: Tool Execution `StripeAPI.get_charge_status(ch_3N8x...)` returned `succeeded`\n         * Step 4: Policy Gate Triggered: `Rule #104: Refund > $200 requires dual human confirmation`. Paused for Ops Commander approval.\n       - Pulsing cyan/indigo execution dot and millisecond timestamps.\n     * Panel Tab / Section 2: \"Policy Decision Breakdown\"\n       - Visual progress/distribution bars for today's policy routing:\n         * Autonomous Pass: 87.4% (green progress bar)\n         * Guardrail Intercepted: 8.2% (indigo progress bar)\n         * Human Escalation: 4.4% (amber/rose progress bar)\n       - Top triggered guardrails list:\n         * `PII / PCI Masking Gate`: 1,420 triggers (100% compliant)\n         * `Financial Threshold (> $250)`: 47 triggers\n         * `Sentiment Sentiment Dip (< 0.2)`: 18 triggers\n     * Live Agent Health & Model Latency mini-widget: Token throughput (14.2k tok/s), P99 Latency (840ms).\n\nDesign Quality:\n- Pixel-perfect typography and spacing.\n- Crisp borders (1px border with dark slate separation).\n- Glowing indicators for active real-time AI states.\n- High visual hierarchy that immediately communicates enterprise monitoring and operational control.",
+  "name": "projects/16037386457659756730/screens/529ee7aaa6de4261865b9e66b8b9677c",
+  "theme": {
+    "colorMode": "DARK",
+    "font": "INTER",
+    "roundness": "ROUND_FOUR",
+    "customColor": "#6366f1",
+    "headlineFont": "INTER",
+    "bodyFont": "INTER",
+    "labelFont": "GEIST",
+    "namedColors": {
+      "on_primary_fixed": "#07006c",
+      "inverse_on_surface": "#2c303b",
+      "on_secondary_fixed_variant": "#004e5a",
+      "surface_variant": "#313540",
+      "surface": "#0f131d",
+      "surface_container_lowest": "#0a0e18",
+      "secondary_fixed_dim": "#2fd9f4",
+      "on_primary": "#1000a9",
+      "surface_container_low": "#171b26",
+      "on_tertiary": "#003825",
+      "surface_dim": "#0f131d",
+      "outline": "#908fa0",
+      "outline_variant": "#464554",
+      "tertiary_fixed": "#68fcbf",
+      "secondary": "#5de6ff",
+      "tertiary": "#45dfa4",
+      "primary_fixed_dim": "#c0c1ff",
+      "tertiary_fixed_dim": "#45dfa4",
+      "tertiary_container": "#00a574",
+      "surface_tint": "#c0c1ff",
+      "on_tertiary_fixed": "#002114",
+      "background": "#0f131d",
+      "on_secondary_fixed": "#001f25",
+      "on_background": "#dfe2f1",
+      "primary": "#c0c1ff",
+      "on_primary_container": "#0d0096",
+      "on_surface": "#dfe2f1",
+      "on_secondary": "#00363e",
+      "on_tertiary_container": "#003120",
+      "on_tertiary_fixed_variant": "#005137",
+      "on_error": "#690005",
+      "inverse_surface": "#dfe2f1",
+      "surface_container_highest": "#313540",
+      "primary_fixed": "#e1e0ff",
+      "surface_container": "#1c1f2a",
+      "error_container": "#93000a",
+      "surface_container_high": "#262a35",
+      "primary_container": "#8083ff",
+      "on_secondary_container": "#00515d",
+      "on_error_container": "#ffdad6",
+      "on_primary_fixed_variant": "#2f2ebe",
+      "secondary_fixed": "#a2eeff",
+      "error": "#ffb4ab",
+      "on_surface_variant": "#c7c4d7",
+      "surface_bright": "#353944",
+      "secondary_container": "#00cbe6",
+      "inverse_primary": "#494bd6"
+    },
+    "colorVariant": "FIDELITY",
+    "overridePrimaryColor": "#6366f1",
+    "overrideSecondaryColor": "#22d3ee",
+    "overrideTertiaryColor": "#34d399",
+    "overrideNeutralColor": "#0b0f19",
+    "spacingScale": 2,
+    "typography": {
+      "body-lg": {
+        "fontFamily": "Inter",
+        "fontSize": "1rem",
+        "fontWeight": "400",
+        "lineHeight": "1.5rem",
+        "letterSpacing": "0"
+      },
+      "mono-code": {
+        "fontFamily": "Geist",
+        "fontSize": "0.75rem",
+        "fontWeight": "400",
+        "lineHeight": "1.25rem",
+        "letterSpacing": "0"
+      },
+      "headline-lg": {
+        "fontFamily": "Inter",
+        "fontSize": "1.75rem",
+        "fontWeight": "600",
+        "lineHeight": "2.25rem",
+        "letterSpacing": "-0.02em"
+      },
+      "headline-md": {
+        "fontFamily": "Inter",
+        "fontSize": "1.25rem",
+        "fontWeight": "600",
+        "lineHeight": "1.75rem",
+        "letterSpacing": "-0.015em"
+      },
+      "label-sm": {
+        "fontFamily": "Inter",
+        "fontSize": "0.6875rem",
+        "fontWeight": "600",
+        "lineHeight": "0.875rem",
+        "letterSpacing": "0.04em"
+      },
+      "mono-metric": {
+        "fontFamily": "Geist",
+        "fontSize": "1.5rem",
+        "fontWeight": "600",
+        "lineHeight": "1.75rem",
+        "letterSpacing": "-0.02em"
+      },
+      "label-md": {
+        "fontFamily": "Inter",
+        "fontSize": "0.8125rem",
+        "fontWeight": "500",
+        "lineHeight": "1rem",
+        "letterSpacing": "0.01em"
+      },
+      "headline-lg-mobile": {
+        "fontFamily": "Inter",
+        "fontSize": "1.375rem",
+        "fontWeight": "600",
+        "lineHeight": "1.75rem",
+        "letterSpacing": "-0.015em"
+      },
+      "body-md": {
+        "fontFamily": "Inter",
+        "fontSize": "0.875rem",
+        "fontWeight": "400",
+        "lineHeight": "1.25rem",
+        "letterSpacing": "0"
+      },
+      "headline-xl": {
+        "fontFamily": "Inter",
+        "fontSize": "2.25rem",
+        "fontWeight": "700",
+        "lineHeight": "2.75rem",
+        "letterSpacing": "-0.025em"
+      },
+      "body-sm": {
+        "fontFamily": "Inter",
+        "fontSize": "0.75rem",
+        "fontWeight": "400",
+        "lineHeight": "1.125rem",
+        "letterSpacing": "0.01em"
+      }
+    },
+    "spacing": {
+      "space-xl": "1.5rem",
+      "margin-desktop": "1.5rem",
+      "space-lg": "1rem",
+      "space-sm": "0.5rem",
+      "gutter-desktop": "1rem",
+      "space-md": "0.75rem",
+      "margin": "1rem",
+      "space-xs": "0.25rem",
+      "gutter": "0.75rem"
+    },
+    "headlineFontFamily": "Inter",
+    "bodyFontFamily": "Inter",
+    "labelFontFamily": "Geist"
+  },
+  "deviceType": "DESKTOP",
+  "screenType": "DESIGN",
+  "screenMetadata": {
+    "agentType": "PRO_AGENT",
+    "status": "COMPLETE"
+  },
+  "designSystem": {
+    "name": "assets/f94966f2e6d5436cb225f493c20306cc",
+    "designSystem": {
+      "displayName": "ResolveFlow Ops",
+      "styleGuidelines": "## Brand & Style\n\nThe design system establishes a mission-critical, high-density operations environment built for automated incident remediation, AI agents, and systems orchestration. The personality is disciplined, analytical, and authoritative\u2014engineered to instill absolute operational control during high-velocity deployments and system anomalies.\n\nThe visual direction merges modern enterprise ergonomics with high-density technical telemetry. Visual hierarchy is established via meticulous typographic scale, structural border delineation, and targeted luminous accents against an obsidian canvas. Noise and extraneous decoration are eliminated in favor of clean information architecture, instant state comprehension, and tactical focus.\n\n## Layout & Spacing\n\nThe layout model is governed by an enterprise 12-column fluid grid system with compact baseline increments of 4px and 8px. It maximizes screen real estate and supports multi-window operations environments:\n\n- **Desktop (1280px+)**: 12-column fluid grid with fixed collapsible navigation (240px wide or 64px iconized), 16px (`gutter-desktop`) gutters between analytical modules, and 24px (`margin-desktop`) outer canvas margins. Multi-column metric ribbons flex into 4 or 6 equal units.\n- **Tablet (768px - 1279px)**: Responsive 8-column layout. The live execution stream transitions to a sliding overlay or a dedicated lower bottom sheet; gutters compress to 12px (`gutter`).\n- **Mobile (< 768px)**: 4-column compact stacked view. Side panels drop into modal drawers; data grids switch to sticky-column cards; margins tighten to 16px (`margin`).\n\nSpacing tokens prioritize functional density: component inner padding adheres to compact multiples (`space-xs` through `space-md`), preventing layout bloat and ensuring critical incident telemetry fits above the screen fold.\n\n## Elevation & Depth\n\nDepth is established without intrusive cast shadows. The system uses a disciplined combination of tonal surface layering, low-contrast hairline borders, and targeted luminescent backdrops:\n\n- **Tier 0 (Root Canvas)**: `#0b0f19` \u2014 The absolute foundation.\n- **Tier 1 (Panels & Cards)**: `#111827` overlaid with a 1px solid border of `#1f293d`. Gives crisp architectural separation without shadow fuzziness.\n- **Tier 2 (Popovers, Tooltips & Dropdowns)**: `#1a2234` paired with border `#374151` and an ambient, low-spread drop shadow (`box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.65)`).\n- **Tier 3 (Modals & Command Center)**: `#0f172a` bordered by `#374151`, backed by a 60% neutral black backdrop blur (`backdrop-filter: blur(8px)`).\n- **Active AI Stream & Status Luminescence**: Critical items use subtle directional glows instead of shadows. A running AI agent or critical alert applies an ultra-soft perimeter glow: `0 0 12px rgba(99, 102, 241, 0.15)` for primary operations and `0 0 12px rgba(34, 211, 238, 0.15)` for active AI traces.\n\n## Components\n\n### Buttons & Interactive Triggers\n- **Primary Action**: Solid `#6366f1` background, `#ffffff` text, font-weight 500, height 32px (compact) or 36px (standard). Hover state lifts to `#818cf8`. Focus rings exhibit a 2px offset border in `#6366f1` with zero fuzzy blur.\n- **Secondary Action**: `#111827` background, 1px border `#374151`, `#f9fafb` text. On hover, background shifts to `#1f293d` with border `#4b5563`.\n- **Destructive/Escalation Action**: Subdued `#1f1924` tint, 1px border `#f87171` at 30% opacity, `#f87171` text. On hover, transitions to solid `#f87171` with `#0b0f19` text.\n\n### Badges & Status Indicators\n- Status badges feature a semi-translucent tint (10% opacity) coupled with a matching 1px border (25% opacity) and solid high-contrast foreground text:\n  - **Healthy/Operational**: Background `rgba(52, 211, 153, 0.10)`, border `rgba(52, 211, 153, 0.25)`, text `#34d399`. Contains a 6px static circle dot.\n  - **Pending Approvals**: Background `rgba(251, 191, 36, 0.10)`, border `rgba(251, 191, 36, 0.25)`, text `#fbbf24`.\n  - **Critical Escalation**: Background `rgba(248, 113, 113, 0.10)`, border `rgba(248, 113, 113, 0.30)`, text `#f87171`. Pulse animation applied to the indicator dot.\n  - **AI Execution Stream**: Background `rgba(34, 211, 238, 0.10)`, border `rgba(34, 211, 238, 0.30)`, text `#22d3ee`.\n\n### Data Tables & High-Density Lists\n- Row heights pegged strictly to 36px (condensed) or 44px (default).\n- Separators use 1px solid `#1f293d`. Hover state transitions row background to `#162032`.\n- All metric cells and timestamps render in `Geist` with tabular numbers enabled. Column headers use uppercase `label-sm` with active sort chevrons tinted `#9ca3af`.\n\n### Input Fields & Controls\n- Height standardized to 32px or 36px. Background `#0b0f19`, border 1px solid `#1f293d`, placeholder `#6b7280`. Focused state switches border to `#6366f1` without generic outer glow rings.\n- Checkboxes and radio buttons use 14px boxes with a 1px border `#374151`, filling with `#6366f1` and an inset white checkmark upon selection.\n\n### Cards & Telemetry Containers\n- Cards sit on `#111827` with a 1px border of `#1f293d`. \n- Card headers feature an integrated lower border divider (`#1f293d`), separating module titling, live stream indicators, and action menus from the internal body canvas.\n\n### Real-time AI Stream & Execution Terminal\n- Embedded streaming consoles render on a deep inset background (`#070a11`) with a 1px inner border (`#1f293d`).\n- Output streams render syntax tokens dynamically: timestamps in `#6b7280`, orchestration steps in `#818cf8`, autonomous tool actions in `#22d3ee`, and parameter payloads in `#e5e7eb`.\n- Active execution pulse uses an inline trailing cursor in `#22d3ee` with a 1-second interval cadence.",
+      "theme": {
+        "colorMode": "DARK",
+        "font": "INTER",
+        "roundness": "ROUND_FOUR",
+        "customColor": "#6366f1",
+        "headlineFont": "INTER",
+        "bodyFont": "INTER",
+        "labelFont": "GEIST",
+        "namedColors": {
+          "tertiary_fixed": "#68fcbf",
+          "inverse_surface": "#dfe2f1",
+          "primary_fixed": "#e1e0ff",
+          "on_primary_fixed": "#07006c",
+          "surface_container_lowest": "#0a0e18",
+          "secondary_fixed_dim": "#2fd9f4",
+          "error_container": "#93000a",
+          "surface_container_highest": "#313540",
+          "secondary_fixed": "#a2eeff",
+          "background": "#0f131d",
+          "inverse_primary": "#494bd6",
+          "surface": "#0f131d",
+          "on_tertiary_fixed_variant": "#005137",
+          "error": "#ffb4ab",
+          "surface_tint": "#c0c1ff",
+          "on_error_container": "#ffdad6",
+          "tertiary": "#45dfa4",
+          "surface_container": "#1c1f2a",
+          "on_surface_variant": "#c7c4d7",
+          "on_tertiary_container": "#003120",
+          "primary_container": "#8083ff",
+          "on_primary_container": "#0d0096",
+          "outline": "#908fa0",
+          "on_secondary_fixed_variant": "#004e5a",
+          "on_primary": "#1000a9",
+          "outline_variant": "#464554",
+          "surface_bright": "#353944",
+          "primary": "#c0c1ff",
+          "inverse_on_surface": "#2c303b",
+          "surface_dim": "#0f131d",
+          "on_secondary": "#00363e",
+          "on_background": "#dfe2f1",
+          "on_surface": "#dfe2f1",
+          "surface_variant": "#313540",
+          "on_tertiary": "#003825",
+          "surface_container_high": "#262a35",
+          "secondary_container": "#00cbe6",
+          "tertiary_fixed_dim": "#45dfa4",
+          "tertiary_container": "#00a574",
+          "on_error": "#690005",
+          "on_secondary_fixed": "#001f25",
+          "surface_container_low": "#171b26",
+          "primary_fixed_dim": "#c0c1ff",
+          "secondary": "#5de6ff",
+          "on_tertiary_fixed": "#002114",
+          "on_secondary_container": "#00515d",
+          "on_primary_fixed_variant": "#2f2ebe"
+        },
+        "designMd": "---\nname: ResolveFlow Ops\ncolors:\n  surface: '#0f131d'\n  surface-dim: '#0f131d'\n  surface-bright: '#353944'\n  surface-container-lowest: '#0a0e18'\n  surface-container-low: '#171b26'\n  surface-container: '#1c1f2a'\n  surface-container-high: '#262a35'\n  surface-container-highest: '#313540'\n  on-surface: '#dfe2f1'\n  on-surface-variant: '#c7c4d7'\n  inverse-surface: '#dfe2f1'\n  inverse-on-surface: '#2c303b'\n  outline: '#908fa0'\n  outline-variant: '#464554'\n  surface-tint: '#c0c1ff'\n  primary: '#c0c1ff'\n  on-primary: '#1000a9'\n  primary-container: '#8083ff'\n  on-primary-container: '#0d0096'\n  inverse-primary: '#494bd6'\n  secondary: '#5de6ff'\n  on-secondary: '#00363e'\n  secondary-container: '#00cbe6'\n  on-secondary-container: '#00515d'\n  tertiary: '#45dfa4'\n  on-tertiary: '#003825'\n  tertiary-container: '#00a574'\n  on-tertiary-container: '#003120'\n  error: '#ffb4ab'\n  on-error: '#690005'\n  error-container: '#93000a'\n  on-error-container: '#ffdad6'\n  primary-fixed: '#e1e0ff'\n  primary-fixed-dim: '#c0c1ff'\n  on-primary-fixed: '#07006c'\n  on-primary-fixed-variant: '#2f2ebe'\n  secondary-fixed: '#a2eeff'\n  secondary-fixed-dim: '#2fd9f4'\n  on-secondary-fixed: '#001f25'\n  on-secondary-fixed-variant: '#004e5a'\n  tertiary-fixed: '#68fcbf'\n  tertiary-fixed-dim: '#45dfa4'\n  on-tertiary-fixed: '#002114'\n  on-tertiary-fixed-variant: '#005137'\n  background: '#0f131d'\n  on-background: '#dfe2f1'\n  surface-variant: '#313540'\ntypography:\n  headline-xl:\n    fontFamily: Inter\n    fontSize: 2.25rem\n    fontWeight: '700'\n    lineHeight: 2.75rem\n    letterSpacing: -0.025em\n  headline-lg:\n    fontFamily: Inter\n    fontSize: 1.75rem\n    fontWeight: '600'\n    lineHeight: 2.25rem\n    letterSpacing: -0.02em\n  headline-lg-mobile:\n    fontFamily: Inter\n    fontSize: 1.375rem\n    fontWeight: '600'\n    lineHeight: 1.75rem\n    letterSpacing: -0.015em\n  headline-md:\n    fontFamily: Inter\n    fontSize: 1.25rem\n    fontWeight: '600'\n    lineHeight: 1.75rem\n    letterSpacing: -0.015em\n  body-lg:\n    fontFamily: Inter\n    fontSize: 1rem\n    fontWeight: '400'\n    lineHeight: 1.5rem\n    letterSpacing: '0'\n  body-md:\n    fontFamily: Inter\n    fontSize: 0.875rem\n    fontWeight: '400'\n    lineHeight: 1.25rem\n    letterSpacing: '0'\n  body-sm:\n    fontFamily: Inter\n    fontSize: 0.75rem\n    fontWeight: '400'\n    lineHeight: 1.125rem\n    letterSpacing: 0.01em\n  label-md:\n    fontFamily: Inter\n    fontSize: 0.8125rem\n    fontWeight: '500'\n    lineHeight: 1rem\n    letterSpacing: 0.01em\n  label-sm:\n    fontFamily: Inter\n    fontSize: 0.6875rem\n    fontWeight: '600'\n    lineHeight: 0.875rem\n    letterSpacing: 0.04em\n  mono-metric:\n    fontFamily: Geist\n    fontSize: 1.5rem\n    fontWeight: '600'\n    lineHeight: 1.75rem\n    letterSpacing: -0.02em\n  mono-code:\n    fontFamily: Geist\n    fontSize: 0.75rem\n    fontWeight: '400'\n    lineHeight: 1.25rem\n    letterSpacing: '0'\nrounded:\n  sm: 0.125rem\n  DEFAULT: 0.25rem\n  md: 0.375rem\n  lg: 0.5rem\n  xl: 0.75rem\n  full: 9999px\nspacing:\n  gutter: 0.75rem\n  gutter-desktop: 1rem\n  margin: 1rem\n  margin-desktop: 1.5rem\n  space-xs: 0.25rem\n  space-sm: 0.5rem\n  space-md: 0.75rem\n  space-lg: 1rem\n  space-xl: 1.5rem\n---\n\n## Brand & Style\n\nThe design system establishes a mission-critical, high-density operations environment built for automated incident remediation, AI agents, and systems orchestration. The personality is disciplined, analytical, and authoritative\u2014engineered to instill absolute operational control during high-velocity deployments and system anomalies.\n\nThe visual direction merges modern enterprise ergonomics with high-density technical telemetry. Visual hierarchy is established via meticulous typographic scale, structural border delineation, and targeted luminous accents against an obsidian canvas. Noise and extraneous decoration are eliminated in favor of clean information architecture, instant state comprehension, and tactical focus.\n\n## Colors\n\nThe palette operates on a calibrated dark-mode hierarchy designed for long operational shifts with zero eye strain:\n\n- **Canvas & Structural Surfaces**: Primary background sits at `#0b0f19` (Deep Slate-950). Elevated containers, side panels, and cards step up to `#111827` (Slate-900), with tertiary control wells and nested tables at `#1a2234`.\n- **Structural Dividers**: Crisp hairpins rely on `#1f293d` for standard card and panel partitions, while `#374151` is reserved for interactive element borders, focused states, and active splitters.\n- **Brand Accent**: `#6366f1` (Indigo-500) and `#818cf8` (Indigo-400) identify primary triggers, selection rings, interactive focus states, and system-level orchestrations.\n- **Telemetry & Status Accents**:\n  - **Operational & Active Healthy**: `#34d399` (Emerald-400) indicates autonomous execution, healthy agent nodes, and resolved incidents.\n  - **Review & Approval Gateways**: `#fbbf24` (Amber-400) flags pending human approvals, rate-limiting warnings, and non-blocking degradation.\n  - **Escalated & Critical Incidents**: `#f87171` (Rose-400) highlights blocked rollouts, agent runtime exceptions, and severity-1 alerts.\n  - **AI Stream & Automation**: `#22d3ee` (Cyan-400) tracks real-time execution pipelines, dynamic telemetry charts, and LLM reasoning trace tokens.\n- **Text & Data Contrast**: High-contrast `#f9fafb` (Slate-50) serves primary headings and dynamic values; `#9ca3af` (Cool Gray-400) powers labels and table keys; `#6b7280` handles inactive states and timestamp metadata.\n\n## Typography\n\nThe typography strategy leverages **Inter** for core product communication and UI chrome, paired with **Geist** for technical telemetry, data density tables, status indicators, and logs.\n\nAll numeric metric cells, latency gauges, operational timestamps, and data grids must employ OpenType tabular figures (`font-variant-numeric: tabular-nums; font-feature-settings: \"tnum\" on, \"cv05\" on, \"zero\" on`). This prevents visual shifting during live SSE (Server-Sent Events) and WebSocket data streams.\n\nLabels and column headers adopt strict medium/semibold weights with uppercase formatting and letter-spacing tracking (`0.04em`) to ensure legibility across multi-tiered grid dashboards.\n\n## Layout & Spacing\n\nThe layout model is governed by an enterprise 12-column fluid grid system with compact baseline increments of 4px and 8px. It maximizes screen real estate and supports multi-window operations environments:\n\n- **Desktop (1280px+)**: 12-column fluid grid with fixed collapsible navigation (240px wide or 64px iconized), 16px (`gutter-desktop`) gutters between analytical modules, and 24px (`margin-desktop`) outer canvas margins. Multi-column metric ribbons flex into 4 or 6 equal units.\n- **Tablet (768px - 1279px)**: Responsive 8-column layout. The live execution stream transitions to a sliding overlay or a dedicated lower bottom sheet; gutters compress to 12px (`gutter`).\n- **Mobile (< 768px)**: 4-column compact stacked view. Side panels drop into modal drawers; data grids switch to sticky-column cards; margins tighten to 16px (`margin`).\n\nSpacing tokens prioritize functional density: component inner padding adheres to compact multiples (`space-xs` through `space-md`), preventing layout bloat and ensuring critical incident telemetry fits above the screen fold.\n\n## Elevation & Depth\n\nDepth is established without intrusive cast shadows. The system uses a disciplined combination of tonal surface layering, low-contrast hairline borders, and targeted luminescent backdrops:\n\n- **Tier 0 (Root Canvas)**: `#0b0f19` \u2014 The absolute foundation.\n- **Tier 1 (Panels & Cards)**: `#111827` overlaid with a 1px solid border of `#1f293d`. Gives crisp architectural separation without shadow fuzziness.\n- **Tier 2 (Popovers, Tooltips & Dropdowns)**: `#1a2234` paired with border `#374151` and an ambient, low-spread drop shadow (`box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.65)`).\n- **Tier 3 (Modals & Command Center)**: `#0f172a` bordered by `#374151`, backed by a 60% neutral black backdrop blur (`backdrop-filter: blur(8px)`).\n- **Active AI Stream & Status Luminescence**: Critical items use subtle directional glows instead of shadows. A running AI agent or critical alert applies an ultra-soft perimeter glow: `0 0 12px rgba(99, 102, 241, 0.15)` for primary operations and `0 0 12px rgba(34, 211, 238, 0.15)` for active AI traces.\n\n## Shapes\n\nThe design system uses a soft, industrial radius profile (`roundedness: 1`). Interactive elements and data containers utilize calibrated 4px (`0.25rem`) corner radiuses, yielding an engineered, software-instrument aesthetic:\n\n- **Base Elements**: Buttons, text inputs, table row highlights, and dropdown triggers use 4px (`0.25rem`) corner radiuses.\n- **Containers**: Structural cards, metric cards, modal dialogs, and code editors use 8px (`rounded-lg: 0.5rem`).\n- **Telemetry Indicators & Badges**: Status pills and runtime count tags employ full pill rounding (`9999px`) to create an immediate visual distinction between actionable buttons and passive data badges.\n\n## Components\n\n### Buttons & Interactive Triggers\n- **Primary Action**: Solid `#6366f1` background, `#ffffff` text, font-weight 500, height 32px (compact) or 36px (standard). Hover state lifts to `#818cf8`. Focus rings exhibit a 2px offset border in `#6366f1` with zero fuzzy blur.\n- **Secondary Action**: `#111827` background, 1px border `#374151`, `#f9fafb` text. On hover, background shifts to `#1f293d` with border `#4b5563`.\n- **Destructive/Escalation Action**: Subdued `#1f1924` tint, 1px border `#f87171` at 30% opacity, `#f87171` text. On hover, transitions to solid `#f87171` with `#0b0f19` text.\n\n### Badges & Status Indicators\n- Status badges feature a semi-translucent tint (10% opacity) coupled with a matching 1px border (25% opacity) and solid high-contrast foreground text:\n  - **Healthy/Operational**: Background `rgba(52, 211, 153, 0.10)`, border `rgba(52, 211, 153, 0.25)`, text `#34d399`. Contains a 6px static circle dot.\n  - **Pending Approvals**: Background `rgba(251, 191, 36, 0.10)`, border `rgba(251, 191, 36, 0.25)`, text `#fbbf24`.\n  - **Critical Escalation**: Background `rgba(248, 113, 113, 0.10)`, border `rgba(248, 113, 113, 0.30)`, text `#f87171`. Pulse animation applied to the indicator dot.\n  - **AI Execution Stream**: Background `rgba(34, 211, 238, 0.10)`, border `rgba(34, 211, 238, 0.30)`, text `#22d3ee`.\n\n### Data Tables & High-Density Lists\n- Row heights pegged strictly to 36px (condensed) or 44px (default).\n- Separators use 1px solid `#1f293d`. Hover state transitions row background to `#162032`.\n- All metric cells and timestamps render in `Geist` with tabular numbers enabled. Column headers use uppercase `label-sm` with active sort chevrons tinted `#9ca3af`.\n\n### Input Fields & Controls\n- Height standardized to 32px or 36px. Background `#0b0f19`, border 1px solid `#1f293d`, placeholder `#6b7280`. Focused state switches border to `#6366f1` without generic outer glow rings.\n- Checkboxes and radio buttons use 14px boxes with a 1px border `#374151`, filling with `#6366f1` and an inset white checkmark upon selection.\n\n### Cards & Telemetry Containers\n- Cards sit on `#111827` with a 1px border of `#1f293d`. \n- Card headers feature an integrated lower border divider (`#1f293d`), separating module titling, live stream indicators, and action menus from the internal body canvas.\n\n### Real-time AI Stream & Execution Terminal\n- Embedded streaming consoles render on a deep inset background (`#070a11`) with a 1px inner border (`#1f293d`).\n- Output streams render syntax tokens dynamically: timestamps in `#6b7280`, orchestration steps in `#818cf8`, autonomous tool actions in `#22d3ee`, and parameter payloads in `#e5e7eb`.\n- Active execution pulse uses an inline trailing cursor in `#22d3ee` with a 1-second interval cadence.",
+        "colorVariant": "FIDELITY",
+        "overridePrimaryColor": "#6366f1",
+        "overrideSecondaryColor": "#22d3ee",
+        "overrideTertiaryColor": "#34d399",
+        "overrideNeutralColor": "#0b0f19",
+        "spacingScale": 2,
+        "typography": {
+          "headline-xl": {
+            "fontFamily": "Inter",
+            "fontSize": "2.25rem",
+            "fontWeight": "700",
+            "lineHeight": "2.75rem",
+            "letterSpacing": "-0.025em"
+          },
+          "headline-lg-mobile": {
+            "fontFamily": "Inter",
+            "fontSize": "1.375rem",
+            "fontWeight": "600",
+            "lineHeight": "1.75rem",
+            "letterSpacing": "-0.015em"
+          },
+          "label-md": {
+            "fontFamily": "Inter",
+            "fontSize": "0.8125rem",
+            "fontWeight": "500",
+            "lineHeight": "1rem",
+            "letterSpacing": "0.01em"
+          },
+          "body-sm": {
+            "fontFamily": "Inter",
+            "fontSize": "0.75rem",
+            "fontWeight": "400",
+            "lineHeight": "1.125rem",
+            "letterSpacing": "0.01em"
+          },
+          "mono-metric": {
+            "fontFamily": "Geist",
+            "fontSize": "1.5rem",
+            "fontWeight": "600",
+            "lineHeight": "1.75rem",
+            "letterSpacing": "-0.02em"
+          },
+          "body-md": {
+            "fontFamily": "Inter",
+            "fontSize": "0.875rem",
+            "fontWeight": "400",
+            "lineHeight": "1.25rem",
+            "letterSpacing": "0"
+          },
+          "label-sm": {
+            "fontFamily": "Inter",
+            "fontSize": "0.6875rem",
+            "fontWeight": "600",
+            "lineHeight": "0.875rem",
+            "letterSpacing": "0.04em"
+          },
+          "body-lg": {
+            "fontFamily": "Inter",
+            "fontSize": "1rem",
+            "fontWeight": "400",
+            "lineHeight": "1.5rem",
+            "letterSpacing": "0"
+          },
+          "headline-md": {
+            "fontFamily": "Inter",
+            "fontSize": "1.25rem",
+            "fontWeight": "600",
+            "lineHeight": "1.75rem",
+            "letterSpacing": "-0.015em"
+          },
+          "headline-lg": {
+            "fontFamily": "Inter",
+            "fontSize": "1.75rem",
+            "fontWeight": "600",
+            "lineHeight": "2.25rem",
+            "letterSpacing": "-0.02em"
+          },
+          "mono-code": {
+            "fontFamily": "Geist",
+            "fontSize": "0.75rem",
+            "fontWeight": "400",
+            "lineHeight": "1.25rem",
+            "letterSpacing": "0"
+          }
+        },
+        "spacing": {
+          "space-xs": "0.25rem",
+          "gutter-desktop": "1rem",
+          "space-lg": "1rem",
+          "space-sm": "0.5rem",
+          "space-md": "0.75rem",
+          "space-xl": "1.5rem",
+          "margin-desktop": "1.5rem",
+          "gutter": "0.75rem",
+          "margin": "1rem"
+        },
+        "headlineFontFamily": "Inter",
+        "bodyFontFamily": "Inter",
+        "labelFontFamily": "Geist"
+      }
+    },
+    "version": "1"
+  }
+}

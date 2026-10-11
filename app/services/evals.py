@@ -64,8 +64,10 @@ def _execute_run(deps: AgentDeps, checkpointer, session_factory, run: AgentRun) 
     db = session_factory()
     try:
         approval = db.execute(
-            select(ApprovalRequest).where(ApprovalRequest.run_id == run.id)
-        ).scalar_one_or_none()
+            select(ApprovalRequest)
+            .where(ApprovalRequest.run_id == run.id)
+            .order_by(ApprovalRequest.created_at.desc())
+        ).scalars().first()
         resume = None
         if approval and approval.status.value == "approved":
             resume = {"decision": "approved", "reviewer_id": approval.reviewer_id}
@@ -115,6 +117,7 @@ def _run_case(
         db.flush()  # assign ticket.id before referencing it
         run = AgentRun(
             ticket_id=ticket.id,
+            status=RunStatus.running,
             langgraph_thread_id=f"eval-{uuid.uuid4()}",
             provider=deps_local.llm.name,
             max_attempts=settings.run_max_attempts,
@@ -150,17 +153,23 @@ def _run_case(
         approval_action = case.get("approval")
         if interrupted and approval_action in ("approve", "reject"):
             approval = db.execute(
-                select(ApprovalRequest).where(ApprovalRequest.run_id == run.id)
-            ).scalar_one()
+                select(ApprovalRequest)
+                .where(ApprovalRequest.run_id == run.id)
+                .order_by(ApprovalRequest.created_at.desc())
+            ).scalars().first()
+            if approval is None:
+                raise RuntimeError(f"Expected approval request for run {run.id} not found")
             reviewer = _eval_reviewer(db)
             decide_approval(
                 db, approval, reviewer_id=reviewer,
                 approve=approval_action == "approve", note="eval decision",
             )
+            if approval_action == "approve":
+                # Ensure status stays running so background worker doesn't claim before resume
+                run.status = RunStatus.running
             db.commit()
             if approval_action == "approve":
                 # Resume run as the worker would.
-                run.status = RunStatus.running
                 final2, interrupted2 = _execute_run(deps_local, checkpointer, session_factory, run)
                 run.status = RunStatus.awaiting_approval if interrupted2 else RunStatus.completed
                 run.disposition = (

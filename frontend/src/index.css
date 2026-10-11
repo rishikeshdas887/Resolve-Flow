@@ -1,0 +1,18 @@
+/* Root Layout & Resets */
+@import './styles/design-tokens.css';
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--color-canvas);
+  color: #f1f5f9;
+  font-family: var(--font-sans);
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

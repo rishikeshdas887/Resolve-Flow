@@ -51,6 +51,7 @@ def claim_next_run(db: Session) -> AgentRun | None:
     stmt = (
         select(AgentRun)
         .where(AgentRun.status == RunStatus.queued)
+        .where(~AgentRun.langgraph_thread_id.startswith("eval-"))
         .where(
             (AgentRun.next_retry_at.is_(None))
             | (AgentRun.next_retry_at <= datetime.now(timezone.utc))
@@ -78,6 +79,7 @@ def recover_stale_runs(db: Session, settings) -> int:
     stale = db.execute(
         select(AgentRun)
         .where(AgentRun.status == RunStatus.running)
+        .where(~AgentRun.langgraph_thread_id.startswith("eval-"))
         .where(AgentRun.started_at < cutoff)
         .with_for_update(skip_locked=True)
     ).scalars().all()
@@ -113,8 +115,10 @@ def recover_stale_runs(db: Session, settings) -> int:
 def _pending_decision(db: Session, run: AgentRun) -> dict | None:
     """If this run is resuming after approval, return the decision payload."""
     approval = db.execute(
-        select(ApprovalRequest).where(ApprovalRequest.run_id == run.id)
-    ).scalar_one_or_none()
+        select(ApprovalRequest)
+        .where(ApprovalRequest.run_id == run.id)
+        .order_by(ApprovalRequest.created_at.desc())
+    ).scalars().first()
     if approval and approval.status == ApprovalStatus.approved:
         return {"decision": "approved", "reviewer_id": approval.reviewer_id}
     if approval and approval.status == ApprovalStatus.rejected:
