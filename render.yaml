@@ -22,6 +22,14 @@ services:
         sync: false
       - key: EMBEDDING_PROVIDER
         value: auto
+      - key: SEED_ADMIN_EMAIL
+        value: admin@example.com
+      - key: SEED_ADMIN_PASSWORD
+        value: AdminPass123!
+      - key: SEED_AGENT_EMAIL
+        value: agent@example.com
+      - key: SEED_AGENT_PASSWORD
+        value: AgentPass123!
 
 databases:
   - name: resolve-flow-db

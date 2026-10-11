@@ -4,6 +4,9 @@ set -e
 echo "[entrypoint] Running database migrations..."
 alembic upgrade head || echo "[entrypoint] Warning: alembic upgrade failed or skipped."
 
+echo "[entrypoint] Seeding database knowledge & demo users..."
+python scripts/seed.py || echo "[entrypoint] Warning: seed failed or skipped."
+
 echo "[entrypoint] Starting background agent worker..."
 python -m app.worker &
 WORKER_PID=$!
