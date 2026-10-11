@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResolveFlow — Ticket Detail &amp; Execution Inspector</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed": "#e1e0ff",
+            "on-background": "#dfe2f1",
+            "outline-variant": "#464554",
+            "surface-variant": "#313540",
+            "inverse-on-surface": "#2c303b",
+            "on-secondary-container": "#00515d",
+            "error-container": "#93000a",
+            "surface-bright": "#353944",
+            "surface-container-highest": "#313540",
+            "secondary-container": "#00cbe6",
+            "surface-dim": "#0f131d",
+            "outline": "#908fa0",
+            "background": "#0f131d",
+            "inverse-surface": "#dfe2f1",
+            "on-error": "#690005",
+            "tertiary-container": "#00a574",
+            "secondary": "#5de6ff",
+            "on-primary": "#1000a9",
+            "secondary-fixed-dim": "#2fd9f4",
+            "error": "#ffb4ab",
+            "tertiary": "#45dfa4",
+            "primary": "#c0c1ff",
+            "on-tertiary": "#003825",
+            "on-tertiary-fixed-variant": "#005137",
+            "on-secondary-fixed": "#001f25",
+            "on-primary-container": "#0d0096",
+            "surface-tint": "#c0c1ff",
+            "primary-fixed-dim": "#c0c1ff",
+            "surface-container-low": "#171b26",
+            "surface-container": "#1c1f2a",
+            "on-primary-fixed": "#07006c",
+            "on-surface": "#dfe2f1",
+            "surface-container-high": "#262a35",
+            "on-secondary-fixed-variant": "#004e5a",
+            "surface": "#0f131d",
+            "surface-container-lowest": "#0a0e18",
+            "on-secondary": "#00363e",
+            "tertiary-fixed-dim": "#45dfa4",
+            "inverse-primary": "#494bd6",
+            "on-surface-variant": "#c7c4d7",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "on-tertiary-fixed": "#002114",
+            "on-tertiary-container": "#003120",
+            "tertiary-fixed": "#68fcbf",
+            "secondary-fixed": "#a2eeff",
+            "on-error-container": "#ffdad6",
+            "primary-container": "#8083ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xl": "1.5rem",
+            "margin": "1rem",
+            "space-xs": "0.25rem",
+            "gutter": "0.75rem",
+            "gutter-desktop": "1rem",
+            "margin-desktop": "1.5rem",
+            "space-md": "0.75rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "body-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-sm": ["Inter"],
+            "mono-metric": ["Geist"],
+            "headline-xl": ["Inter"],
+            "mono-code": ["Geist"],
+            "label-sm": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.375rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-lg": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "label-md": ["0.8125rem", { "lineHeight": "1rem", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-md": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-sm": ["0.75rem", { "lineHeight": "1.125rem", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "mono-metric": ["1.5rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-xl": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "mono-code": ["0.75rem", { "lineHeight": "1.25rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 1.125rem;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0a0e18;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #313540;
+      border-radius: 2px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #464554;
+    }
+    .token-cursor::after {
+      content: '▋';
+      color: #5de6ff;
+      animation: pulse 1s infinite;
+      margin-left: 2px;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md min-h-screen flex flex-col antialiased selection:bg-primary/20 selection:text-primary">
+<!-- ================= TOP APP BAR (Shared Component JSON Source) ================= -->
+<header class="bg-surface-container-lowest dark:bg-surface-container-lowest border-b border-outline-variant/30 sticky top-0 z-50 flex items-center justify-between px-space-xl h-14 w-full">
+<!-- Brand Anchor & System Indicator -->
+<div class="flex items-center space-x-6">
+<div class="flex items-center space-x-2.5">
+<div class="w-6 h-6 rounded bg-primary-container flex items-center justify-center text-on-primary font-mono-code text-mono-code font-bold shadow-sm">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div class="flex items-baseline space-x-2">
+<span class="font-headline-md text-headline-md font-semibold text-on-surface dark:text-on-surface tracking-tight">ResolveFlow</span>
+<span class="font-mono-code text-mono-code text-[10px] px-1.5 py-0.5 rounded bg-surface-container-high text-primary border border-outline-variant/40 tracking-wider">OPS v2.4</span>
+</div>
+</div>
+<!-- Navigation Tabs (Shared Components JSON execution) -->
+<nav class="hidden md:flex items-center space-x-6 pt-3">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface font-label-md text-label-md pb-3 transition-colors" href="#">Dashboard</a>
+<!-- Active Tab: Tickets -->
+<a class="text-primary dark:text-primary font-label-md text-label-md border-b-2 border-primary dark:border-primary pb-3 font-semibold flex items-center gap-1.5" href="#">
+          Tickets
+          <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface font-label-md text-label-md pb-3 transition-colors flex items-center gap-1.5" href="#">
+          Approvals
+          <span class="px-1.5 py-0.2 rounded-full text-[10px] font-mono-code bg-surface-container-highest text-secondary border border-outline-variant/40">14</span>
+</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface font-label-md text-label-md pb-3 transition-colors" href="#">Knowledge</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface font-label-md text-label-md pb-3 transition-colors" href="#">Audit</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface font-label-md text-label-md pb-3 transition-colors" href="#">Evals</a>
+</nav>
+</div>
+<!-- Right Global Controls -->
+<div class="flex items-center space-x-3">
+<!-- Search Input -->
+<div class="relative hidden lg:block w-64">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-outline text-[16px]">search</span>
+<input class="w-full h-8 pl-8 pr-12 text-body-sm font-body-sm bg-surface-container-lowest border border-outline-variant/40 rounded focus:border-primary focus:outline-none focus:ring-0 text-on-surface placeholder:text-outline/70" placeholder="Search traces, runs, tickets (Cmd+K)" type="text"/>
+<kbd class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-mono-code text-outline border border-outline-variant/40 px-1 rounded bg-surface-container-low">⌘K</kbd>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center space-x-1 border-l border-outline-variant/30 pl-3">
+<button class="relative p-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/50 rounded transition-colors duration-150" title="Notifications">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-error rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/50 rounded transition-colors duration-150" title="Settings &amp; Parameters">
+<span class="material-symbols-outlined">tune</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/50 rounded transition-colors duration-150" title="System Documentation &amp; Help">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<!-- Trailing Primary Action (Shared Component JSON exact string) -->
+<button class="h-8 px-3 rounded bg-primary-container text-on-primary-fixed font-label-md text-label-md font-medium hover:bg-primary-container/90 transition-all active:scale-95 flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+<span>Deploy Agent</span>
+</button>
+<!-- User Profile Avatar (Lead Incident Commander) -->
+<div class="flex items-center pl-1 border-l border-outline-variant/30">
+<div class="w-7 h-7 rounded-full bg-surface-container-highest border border-outline-variant/60 flex items-center justify-center font-mono-code text-[11px] font-semibold text-primary" title="Lead Incident Commander avatar">
+          AM
+        </div>
+</div>
+</div>
+</header>
+<!-- ================= SUBHEADER / BREADCRUMBS & INCIDENT TELEMETRY BAR ================= -->
+<section class="bg-surface-container-low border-b border-outline-variant/30 px-space-xl py-space-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+<!-- Breadcrumb & Core Identity -->
+<div class="flex flex-col space-y-1">
+<div class="flex items-center space-x-2 text-body-sm font-body-sm text-outline">
+<span class="hover:text-on-surface transition-colors cursor-pointer">Tickets</span>
+<span>/</span>
+<span class="font-mono-code text-on-surface font-medium cursor-pointer">#TK-9844</span>
+<span>/</span>
+<span class="text-on-surface-variant">Execution Inspector &amp; Policy Verification</span>
+</div>
+<div class="flex items-center flex-wrap gap-2.5 pt-0.5">
+<span class="font-mono-code text-body-sm font-bold text-secondary tracking-tight">#TK-9844</span>
+<h1 class="font-headline-md text-headline-md font-semibold text-on-surface tracking-tight">
+          Stripe billing exception &amp; refund credit dispute &gt; $450
+        </h1>
+<div class="flex items-center gap-1.5">
+<!-- Pending Badge -->
+<span class="px-2 py-0.5 rounded text-[11px] font-label-sm uppercase tracking-wide bg-amber-500/10 border border-amber-500/30 text-amber-300 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            PENDING SUPERVISOR AUTHORIZATION
+          </span>
+<!-- Critical Priority Badge -->
+<span class="px-2 py-0.5 rounded text-[11px] font-label-sm uppercase tracking-wide bg-error-container/30 border border-error/30 text-error flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-ping"></span>
+            CRITICAL
+          </span>
+<!-- SLA Countdown Badge -->
+<span class="px-2 py-0.5 rounded text-[11px] font-mono-code bg-surface-container-high border border-outline-variant/50 text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-error">timer</span>
+            P95 SLA: <strong class="text-error font-medium">02m 14s remaining</strong>
+</span>
+</div>
+</div>
+</div>
+<!-- Quick Telemetry Action Buttons -->
+<div class="flex items-center space-x-2 self-start md:self-auto shrink-0">
+<button class="h-8 px-2.5 rounded bg-surface-container border border-outline-variant/40 hover:bg-surface-container-high text-on-surface text-label-md font-label-md flex items-center space-x-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+<span>Re-evaluate Policies</span>
+</button>
+<button class="h-8 px-2.5 rounded bg-surface-container border border-outline-variant/40 hover:bg-surface-container-high text-on-surface text-label-md font-label-md flex items-center space-x-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+<span>Simulate Dry-Run</span>
+</button>
+<div class="h-4 w-px bg-outline-variant/40"></div>
+<button class="h-8 px-3 rounded bg-primary-container text-on-primary-fixed text-label-md font-label-md font-medium hover:bg-primary-container/90 flex items-center space-x-1.5 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span>Trigger Run</span>
+<span class="text-[10px] font-mono-code px-1 py-0.2 bg-black/20 rounded ml-1">Claude 3.5 Sonnet</span>
+</button>
+<div class="relative group">
+<button class="h-8 w-8 rounded bg-surface-container border border-outline-variant/40 text-on-surface-variant hover:text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+<div class="hidden group-hover:flex flex-col absolute right-0 top-full mt-1 w-48 bg-surface-container-high border border-outline-variant/60 rounded shadow-xl py-1 z-50 text-body-sm font-body-sm">
+<a class="px-3 py-1.5 hover:bg-surface-variant text-on-surface flex items-center space-x-2" href="#">
+<span class="material-symbols-outlined text-[16px]">qr_code_2</span>
+<span>Handoff to Human Tier-3</span>
+</a>
+<a class="px-3 py-1.5 hover:bg-surface-variant text-on-surface flex items-center space-x-2" href="#">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Export Trace JSON</span>
+</a>
+<a class="px-3 py-1.5 hover:bg-surface-variant text-on-surface flex items-center space-x-2 text-error" href="#">
+<span class="material-symbols-outlined text-[16px]">emergency</span>
+<span>Escalate to SecOps</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= MAIN TWO-COLUMN WORKSPACE CANVAS ================= -->
+<main class="flex-1 w-full p-space-lg lg:p-space-xl grid grid-cols-1 lg:grid-cols-12 gap-space-lg custom-scrollbar overflow-y-auto">
+<!-- ================= LEFT COLUMN: TICKET CORE & AUDIT TIMELINE (~48% -> 6 cols) ================= -->
+<div class="lg:col-span-6 flex flex-col space-y-space-md">
+<!-- 1. Requester & Account Metadata Card -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded p-4">
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-outline-variant/30">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">verified_user</span>
+<h2 class="font-headline-md text-[14px] text-on-surface font-semibold uppercase tracking-wider">Customer Context &amp; Intercept Guard</h2>
+</div>
+<span class="font-mono-code text-[11px] text-outline px-2 py-0.5 rounded bg-surface-container-lowest border border-outline-variant/30">
+            CID: org_datadog_ent_991
+          </span>
+</div>
+<div class="grid grid-cols-2 gap-3 text-body-sm font-body-sm">
+<div class="bg-surface-container-lowest/70 p-2.5 rounded border border-outline-variant/20">
+<span class="font-label-sm text-outline uppercase block text-[10px] tracking-wider mb-1">Customer Account</span>
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-medium text-on-surface">Datadog Org</span>
+<span class="text-[10px] font-mono-code px-1.5 py-0.2 rounded bg-tertiary/10 text-tertiary border border-tertiary/20">Enterprise Platinum</span>
+</div>
+<span class="font-mono-code text-[11px] text-outline block mt-0.5">$34,500.00 MRR Contract</span>
+</div>
+<div class="bg-surface-container-lowest/70 p-2.5 rounded border border-outline-variant/20">
+<span class="font-label-sm text-outline uppercase block text-[10px] tracking-wider mb-1">Requester &amp; Ingress</span>
+<div class="text-on-surface font-medium truncate">David Kowalski</div>
+<div class="text-outline text-[11px] font-mono-code truncate">david.k@datadog.com • DevOps Lead</div>
+<div class="flex items-center space-x-1.5 mt-1 text-[11px] text-secondary">
+<span class="material-symbols-outlined text-[13px]">chat</span>
+<span>Slack Connect Bridge #dd-incident-sync</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest/70 p-2.5 rounded border border-outline-variant/20">
+<span class="font-label-sm text-outline uppercase block text-[10px] tracking-wider mb-1">SLA Guarantee</span>
+<div class="text-on-surface font-medium flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-primary text-[14px]">speed</span>
+<span>15-Minute Critical Guarantee</span>
+</div>
+<span class="text-outline text-[11px] block mt-0.5">Ingress: 14:02:18 UTC (9m elapsed)</span>
+</div>
+<div class="bg-surface-container-lowest/70 p-2.5 rounded border border-amber-500/30 bg-amber-500/5">
+<span class="font-label-sm text-amber-400 uppercase block text-[10px] tracking-wider mb-1">Triggered Intercept Gate</span>
+<div class="font-mono-code text-amber-300 font-semibold text-[11px]">POL-FIN-025 Intercept Active</div>
+<p class="text-[11px] text-on-surface-variant leading-tight mt-0.5">
+              Refunds &gt; $250.00 mandate dual authorization before Stripe settlement dispatch.
+            </p>
+</div>
+</div>
+</section>
+<!-- 2. Ticket Body & Customer Context -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded flex flex-col">
+<div class="flex items-center justify-between px-4 py-2.5 border-b border-outline-variant/30 bg-surface-container">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-outline text-[18px]">forum</span>
+<h3 class="font-headline-md text-[13px] text-on-surface font-semibold tracking-wide">Inbound Request &amp; Telemetry Payload</h3>
+</div>
+<div class="flex items-center space-x-2 text-[11px] font-mono-code text-outline">
+<span>Thread ID: #th_902419_dd</span>
+<span>•</span>
+<span class="text-tertiary">Verified Signature (Ed25519)</span>
+</div>
+</div>
+<div class="p-4 space-y-3">
+<!-- Customer Query Quote -->
+<div class="bg-surface-container-lowest p-3.5 rounded border border-outline-variant/30 relative">
+<div class="flex items-center justify-between text-body-sm font-body-sm text-outline pb-2 mb-2 border-b border-outline-variant/20">
+<span class="font-medium text-on-surface">David Kowalski (Customer DevOps Lead)</span>
+<span class="font-mono-code text-[11px]">14:02:18 UTC (Oct 14)</span>
+</div>
+<p class="text-on-surface text-body-md font-body-md leading-relaxed">
+              "We were mistakenly double-charged for our enterprise log ingestion spike during the AWS US-East outage on Oct 14. We request immediate credit reversal of <span class="font-semibold text-secondary underline decoration-secondary/50">$450.00</span> on invoice <span class="font-mono-code bg-surface-container px-1 py-0.5 rounded text-primary">#INV-99214</span>. Both automated pipelines retried concurrently during the AWS networking split."
+            </p>
+</div>
+<!-- Correlated Telemetry Incident Payload -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-sm text-outline uppercase text-[10px] tracking-wider flex items-center space-x-1">
+<span class="material-symbols-outlined text-[13px] text-secondary">cloud_sync</span>
+<span>Correlated AWS Incident &amp; Pipeline Cross-Reference</span>
+</span>
+<span class="font-mono-code text-[11px] text-secondary">aws-us-east-1-loss-592</span>
+</div>
+<div class="bg-surface-container-lowest p-2.5 rounded font-mono-code text-[11px] text-on-surface-variant border border-outline-variant/30 custom-scrollbar overflow-x-auto">
+<div class="text-outline">// System telemetry auto-attached by Ingress Collector</div>
+<div>{</div>
+<div class="pl-4"><span class="text-primary">"incident_ref"</span>: <span class="text-secondary">"aws-us-east-1-loss-592"</span>,</div>
+<div class="pl-4"><span class="text-primary">"affected_invoice"</span>: <span class="text-secondary">"INV-99214"</span>,</div>
+<div class="pl-4"><span class="text-primary">"duplicate_charge_signature"</span>: <span class="text-tertiary">"ch_3N8x7b99214_sec"</span>,</div>
+<div class="pl-4"><span class="text-primary">"timestamp_window_utc"</span>: <span class="text-on-surface">["18:41:12Z", "18:41:42Z"]</span>,</div>
+<div class="pl-4"><span class="text-primary">"delta_amount_cents"</span>: <span class="text-amber-300">45000</span>,</div>
+<div class="pl-4"><span class="text-primary">"upstream_status"</span>: <span class="text-tertiary">"RESOLVED_CREDIT_RECOMMENDED"</span></div>
+<div>}</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Status Transition History & Lifecycle (Stepper) -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded p-4">
+<h3 class="font-headline-md text-[13px] text-on-surface font-semibold mb-3 flex items-center space-x-2">
+<span class="material-symbols-outlined text-[16px] text-outline">timeline</span>
+<span>Incident Lifecycle Progression</span>
+</h3>
+<div class="relative pl-6 space-y-4 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant/40">
+<!-- Step 1 -->
+<div class="relative flex items-start space-x-3">
+<span class="absolute -left-6 top-0.5 w-3 h-3 rounded-full bg-tertiary ring-4 ring-surface-container-low"></span>
+<div>
+<div class="flex items-center space-x-2">
+<span class="font-label-md text-on-surface font-semibold">Ingress &amp; Ticket Ingestion</span>
+<span class="font-mono-code text-[11px] text-outline">14:02:18 UTC</span>
+</div>
+<p class="text-body-sm text-outline">Parsed Slack incident payload from #dd-incident-sync; validated customer SLA tier.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative flex items-start space-x-3">
+<span class="absolute -left-6 top-0.5 w-3 h-3 rounded-full bg-secondary ring-4 ring-surface-container-low"></span>
+<div>
+<div class="flex items-center space-x-2">
+<span class="font-label-md text-on-surface font-semibold">Autonomous Triage &amp; RAG Execution</span>
+<span class="font-mono-code text-[11px] text-outline">14:02:22 UTC</span>
+</div>
+<p class="text-body-sm text-outline">Billing-Flow-v3 queried Stripe ledger API and vector store; classified refund dispute at 99.8% confidence.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative flex items-start space-x-3">
+<span class="absolute -left-6 top-0.5 w-3 h-3 rounded-full bg-amber-400 ring-4 ring-surface-container-low animate-pulse"></span>
+<div>
+<div class="flex items-center space-x-2">
+<span class="font-label-md text-amber-300 font-semibold">Policy Guardrail Intercept (POL-FIN-025)</span>
+<span class="font-mono-code text-[11px] text-outline">14:02:24 UTC</span>
+</div>
+<p class="text-body-sm text-amber-200/80">Automated run paused: requested amount ($450.00) exceeds $250.00 auto-remediation boundary.</p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="relative flex items-start space-x-3">
+<span class="absolute -left-6 top-0.5 w-3 h-3 rounded-full bg-outline ring-4 ring-surface-container-low"></span>
+<div>
+<div class="flex items-center space-x-2">
+<span class="font-label-md text-on-surface-variant font-medium">Escalated to Supervisor Queue</span>
+<span class="font-mono-code text-[11px] text-outline">Pending Authorization</span>
+</div>
+<p class="text-body-sm text-outline">Awaiting dual verification by Lead Incident Commander or Operations Lead.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Comprehensive Audit Events Log -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded flex flex-col">
+<div class="flex items-center justify-between px-4 py-2.5 border-b border-outline-variant/30 bg-surface-container">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary">lock</span>
+<h3 class="font-headline-md text-[13px] text-on-surface font-semibold tracking-wide">Immutable Audit Trail</h3>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-[11px] font-mono-code text-outline">Ledger Root: 0x8a1b..4c92</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-tertiary text-[10px] font-mono-code border border-outline-variant/40">Verified SHA-256</span>
+</div>
+</div>
+<div class="custom-scrollbar overflow-x-auto">
+<table class="w-full text-left text-body-sm font-body-sm border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/30 bg-surface-container-lowest/60 text-outline text-[11px] font-label-sm uppercase tracking-wider">
+<th class="py-2 px-3">Timestamp (UTC)</th>
+<th class="py-2 px-3">Actor / Principal</th>
+<th class="py-2 px-3">Action Event</th>
+<th class="py-2 px-3">Cryptographic Hash</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-mono-code text-[11px]">
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-2 px-3 text-outline">14:02:18.102</td>
+<td class="py-2 px-3 text-secondary font-medium">IngressSlackBridge</td>
+<td class="py-2 px-3 text-on-surface">EVENT_PAYLOAD_RECEIVED</td>
+<td class="py-2 px-3 text-outline">e3b0c442...9821</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-2 px-3 text-outline">14:02:20.441</td>
+<td class="py-2 px-3 text-primary font-medium">Billing-Flow-v3</td>
+<td class="py-2 px-3 text-on-surface">INTENT_CLASSIFIED_REFUND</td>
+<td class="py-2 px-3 text-outline">4f53cda1...10e4</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-2 px-3 text-outline">14:02:22.094</td>
+<td class="py-2 px-3 text-secondary font-medium">ToolExecutionEngine</td>
+<td class="py-2 px-3 text-on-surface">STRIPE_LEDGER_PREVIEW</td>
+<td class="py-2 px-3 text-outline">9c81ae60...bb42</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors bg-amber-500/5">
+<td class="py-2 px-3 text-outline">14:02:24.318</td>
+<td class="py-2 px-3 text-amber-300 font-medium">PolicyEngine-Core</td>
+<td class="py-2 px-3 text-amber-200">GUARDRAIL_INTERCEPT_THRESHOLD</td>
+<td class="py-2 px-3 text-outline">87af21dc...3190</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-2 px-3 text-outline">14:03:01.884</td>
+<td class="py-2 px-3 text-tertiary font-medium">Admin: Sarah Chen</td>
+<td class="py-2 px-3 text-on-surface">TELEMETRY_VIEWED_INSPECTOR</td>
+<td class="py-2 px-3 text-outline">21c900fb...76a1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- ================= RIGHT COLUMN: AGENT RUN EXECUTION INSPECTOR (~52% -> 6 cols) ================= -->
+<div class="lg:col-span-6 flex flex-col space-y-space-md">
+<!-- 1. Execution Run Overview Banner -->
+<section class="bg-surface-container-low border border-primary/30 rounded p-4 relative overflow-hidden shadow-[0_0_15px_rgba(99,102,241,0.08)]">
+<div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-outline-variant/30">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[20px]">smart_toy</span>
+<div>
+<span class="font-label-sm uppercase text-[10px] tracking-wider text-outline block">Active Execution Run</span>
+<span class="font-mono-code text-[13px] font-bold text-primary">run_tr_84f9a0c12e</span>
+</div>
+</div>
+<div class="flex items-center space-x-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono-code bg-secondary/10 border border-secondary/30 text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary mr-1 animate-pulse"></span>
+              READY FOR SUPERVISOR
+            </span>
+</div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono-code text-body-sm">
+<div class="bg-surface-container-lowest p-2 rounded border border-outline-variant/20">
+<span class="text-[10px] text-outline block uppercase tracking-wider font-label-sm">Latency</span>
+<span class="text-[14px] font-bold text-on-surface">1.24s</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded border border-outline-variant/20">
+<span class="text-[10px] text-outline block uppercase tracking-wider font-label-sm">Token Usage</span>
+<span class="text-[12px] font-semibold text-on-surface">1,842 <span class="text-outline font-normal">in</span> / 390 <span class="text-outline font-normal">out</span></span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded border border-outline-variant/20">
+<span class="text-[10px] text-outline block uppercase tracking-wider font-label-sm">Inference Model</span>
+<span class="text-[12px] font-semibold text-primary truncate block">Claude 3.5 Sonnet</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded border border-outline-variant/20">
+<span class="text-[10px] text-outline block uppercase tracking-wider font-label-sm">Confidence</span>
+<span class="text-[14px] font-bold text-tertiary">99.1%</span>
+</div>
+</div>
+</section>
+<!-- 2. Step-by-Step Execution Traces (Collapsible Trace Tree) -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded">
+<div class="flex items-center justify-between px-4 py-2.5 border-b border-outline-variant/30 bg-surface-container">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">account_tree</span>
+<h3 class="font-headline-md text-[13px] text-on-surface font-semibold tracking-wide">Execution Trace Tree</h3>
+</div>
+<span class="text-[11px] font-mono-code text-outline">3 of 3 steps completed</span>
+</div>
+<div class="p-3 space-y-2">
+<!-- Step 01 -->
+<div class="border border-outline-variant/30 rounded bg-surface-container-lowest overflow-hidden">
+<div class="p-2.5 flex items-center justify-between cursor-pointer hover:bg-surface-container-high/30 transition-colors">
+<div class="flex items-center space-x-2.5">
+<span class="w-5 h-5 rounded bg-tertiary/10 border border-tertiary/30 text-tertiary flex items-center justify-center font-mono-code text-[10px] font-bold">01</span>
+<div>
+<span class="font-label-md text-on-surface text-[12px] font-medium">Intent Classification</span>
+<span class="font-mono-code text-[11px] text-secondary ml-2">billing.refund_dispute</span>
+</div>
+</div>
+<div class="flex items-center space-x-2 font-mono-code text-[11px]">
+<span class="text-tertiary">99.8% match</span>
+<span class="text-outline">180ms</span>
+<span class="material-symbols-outlined text-outline text-[16px]">expand_less</span>
+</div>
+</div>
+<div class="px-3 pb-2.5 pt-1 border-t border-outline-variant/20 text-body-sm text-outline font-mono-code text-[11px] bg-surface-container-lowest/50">
+              Payload matched classifier node: <code>categories.billing.dispute_outage_concurrency</code>
+</div>
+</div>
+<!-- Step 02 -->
+<div class="border border-outline-variant/30 rounded bg-surface-container-lowest overflow-hidden">
+<div class="p-2.5 flex items-center justify-between cursor-pointer hover:bg-surface-container-high/30 transition-colors">
+<div class="flex items-center space-x-2.5">
+<span class="w-5 h-5 rounded bg-tertiary/10 border border-tertiary/30 text-tertiary flex items-center justify-center font-mono-code text-[10px] font-bold">02</span>
+<div>
+<span class="font-label-md text-on-surface text-[12px] font-medium">Hybrid Telemetry &amp; RAG Retrieval</span>
+<span class="font-mono-code text-[11px] text-outline ml-2">Vector + BM25 Lexical</span>
+</div>
+</div>
+<div class="flex items-center space-x-2 font-mono-code text-[11px]">
+<span class="text-secondary">3 chunks recalled</span>
+<span class="text-outline">412ms</span>
+<span class="material-symbols-outlined text-outline text-[16px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Step 03 -->
+<div class="border border-outline-variant/30 rounded bg-surface-container-lowest overflow-hidden">
+<div class="p-2.5 flex items-center justify-between cursor-pointer hover:bg-surface-container-high/30 transition-colors">
+<div class="flex items-center space-x-2.5">
+<span class="w-5 h-5 rounded bg-secondary/10 border border-secondary/30 text-secondary flex items-center justify-center font-mono-code text-[10px] font-bold">03</span>
+<div>
+<span class="font-label-md text-on-surface text-[12px] font-medium">Tool Call: Stripe Ledger Validation</span>
+<span class="font-mono-code text-[11px] text-primary ml-2">stripe.refunds.preview</span>
+</div>
+</div>
+<div class="flex items-center space-x-2 font-mono-code text-[11px]">
+<span class="text-tertiary">HTTP 200 OK</span>
+<span class="text-outline">648ms</span>
+<span class="material-symbols-outlined text-outline text-[16px]">expand_less</span>
+</div>
+</div>
+<div class="p-2.5 border-t border-outline-variant/20 bg-surface-dim font-mono-code text-[11px]">
+<span class="text-outline block mb-1">// Tool Parameter Execution Trace</span>
+<div class="text-secondary">stripe.refunds.preview(</div>
+<div class="pl-4 text-on-surface"><span class="text-primary">charge_id</span>: "ch_3N8x7b99214_sec",</div>
+<div class="pl-4 text-on-surface"><span class="text-primary">amount</span>: 45000,</div>
+<div class="pl-4 text-on-surface"><span class="text-primary">reason</span>: "duplicate_concurrency_outage"</div>
+<div class="text-secondary">) -&gt; <span class="text-tertiary">Verified duplicate webhook event signature #evt_8921a</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Policy Evaluation Results (Interactive Guardrail Gate) -->
+<section class="bg-surface-container-low border border-amber-500/40 rounded p-4">
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-outline-variant/30">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-amber-400 text-[18px]">gavel</span>
+<h3 class="font-headline-md text-[13px] text-on-surface font-semibold tracking-wide">Automated Policy Guardrail Gate</h3>
+</div>
+<span class="px-2 py-0.5 rounded text-[11px] font-label-sm font-bold uppercase bg-amber-500/10 border border-amber-500/30 text-amber-300">
+            REQUIRE_APPROVAL
+          </span>
+</div>
+<div class="space-y-2">
+<!-- Policy 01 (Flagged) -->
+<div class="p-2.5 rounded bg-surface-container-lowest border border-amber-500/40 flex items-start justify-between">
+<div class="space-y-1 pr-2">
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-[11px] font-bold text-amber-400">POL-01</span>
+<span class="text-body-sm text-on-surface font-medium">Autonomous Refund Threshold ≤ $250.00</span>
+</div>
+<p class="text-[11px] text-amber-200/90 leading-tight">
+                Triggered guard: Requested settlement of <strong>$450.00</strong> exceeds autonomous disbursement maximum ($250.00). Requires Tier-3 Human Authorization.
+              </p>
+</div>
+<span class="shrink-0 px-2 py-0.5 rounded text-[10px] font-mono-code font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+              REQUIRE_APPROVAL
+            </span>
+</div>
+<!-- Policy 02 -->
+<div class="p-2.5 rounded bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-[11px] font-bold text-outline">POL-02</span>
+<span class="text-body-sm text-on-surface">Chargeback &amp; Invoicing Window &lt; 60 Days</span>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono-code bg-tertiary/10 text-tertiary border border-tertiary/30">
+              ALLOW (18d Elapsed)
+            </span>
+</div>
+<!-- Policy 03 -->
+<div class="p-2.5 rounded bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-[11px] font-bold text-outline">POL-03</span>
+<span class="text-body-sm text-on-surface">PII &amp; Financial Credential Redaction Check</span>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono-code bg-tertiary/10 text-tertiary border border-tertiary/30">
+              ALLOW (Card *4092 Masked)
+            </span>
+</div>
+<!-- Policy 04 -->
+<div class="p-2.5 rounded bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-[11px] font-bold text-outline">POL-04</span>
+<span class="text-body-sm text-on-surface">Fraud Velocity &amp; Suspicious Activity Scoring</span>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono-code bg-tertiary/10 text-tertiary border border-tertiary/30">
+              ALLOW (Risk Score: 12/100)
+            </span>
+</div>
+</div>
+</section>
+<!-- 4. Draft Autonomous Response & Prepared Tool Payload -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded">
+<div class="flex items-center justify-between px-4 py-2.5 border-b border-outline-variant/30 bg-surface-container">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-[16px] text-primary">send</span>
+<h3 class="font-headline-md text-[13px] text-on-surface font-semibold tracking-wide">Proposed Tool Execution &amp; Draft Communication</h3>
+</div>
+<span class="text-[11px] font-mono-code text-outline">Staged for Execution</span>
+</div>
+<div class="p-4 space-y-3">
+<!-- Outbound Payload -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-sm text-outline uppercase text-[10px] tracking-wider font-semibold">Staged API Dispatch: stripe.refunds.create</span>
+<span class="font-mono-code text-[10px] text-secondary">Idempotency-Key: idemp_99a812cf</span>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded font-mono-code text-[11px] border border-outline-variant/30 text-on-surface-variant overflow-x-auto">
+<pre><code>{
+  <span class="text-primary">"charge"</span>: <span class="text-secondary">"ch_3N8x7b99214_sec"</span>,
+  <span class="text-primary">"amount"</span>: <span class="text-amber-300">45000</span>,
+  <span class="text-primary">"reason"</span>: <span class="text-secondary">"duplicate"</span>,
+  <span class="text-primary">"metadata"</span>: {
+    <span class="text-primary">"incident_waiver"</span>: <span class="text-secondary">"aws-us-east-1-loss-592"</span>,
+    <span class="text-primary">"authorized_by_supervisor"</span>: <span class="text-tertiary">true</span>,
+    <span class="text-primary">"ticket_id"</span>: <span class="text-secondary">"TK-9844"</span>
+  }
+}</code></pre>
+</div>
+</div>
+<!-- Customer Message Draft -->
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-sm text-outline uppercase text-[10px] tracking-wider font-semibold">AI Generated Customer Notification (Draft)</span>
+<button class="text-[11px] text-primary hover:underline flex items-center space-x-1">
+<span class="material-symbols-outlined text-[13px]">edit</span>
+<span>Edit Copy</span>
+</button>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded border border-outline-variant/30 text-body-sm font-body-sm text-on-surface space-y-2">
+<p>Hi David,</p>
+<p>Thank you for reaching out. We have corroborated the concurrent ingestion retries on invoice <strong>#INV-99214</strong> against the AWS US-East-1 outage telemetry (incident reference <code>aws-us-east-1-loss-592</code>).</p>
+<p>Under Section 8.4 of your Enterprise Platinum MSA, we have authorized and processed a full credit reversal of <strong>$450.00</strong> back to your payment method ending in 4092. You should see the credit reflected on your statement within 1-3 business days.</p>
+<p class="text-outline text-[11px]">Best regards,<br/>ResolveFlow Autonomous Remediation Systems</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Grounded Evidence Sources (Citations & RAG Attribution) -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded p-4">
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-outline-variant/30">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">find_in_page</span>
+<h3 class="font-headline-md text-[13px] text-on-surface font-semibold tracking-wide">Grounded Evidence &amp; RAG Attribution</h3>
+</div>
+<span class="font-mono-code text-[11px] text-outline">Vector Store: pinecone-prod-cluster-04</span>
+</div>
+<div class="space-y-2.5">
+<!-- Citation 1 -->
+<div class="p-2.5 rounded bg-surface-container-lowest border border-outline-variant/30 space-y-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[15px]">description</span>
+<span class="font-label-md text-on-surface font-medium text-[12px]">Master Service Agreement - Enterprise Ingestion SLA Addendum (v4.2)</span>
+</div>
+<span class="font-mono-code text-[10px] text-tertiary bg-tertiary/10 px-1.5 py-0.5 rounded border border-tertiary/20">
+                0.942 Vector / 0.88 Lexical
+              </span>
+</div>
+<p class="text-[11px] text-on-surface-variant italic pl-6 border-l-2 border-primary/50">
+              "In the event of upstream cloud provider outages affecting ingestion telemetry, credits for duplicate pipeline retries are eligible under Section 8.4 upon cross-telemetry verification."
+            </p>
+</div>
+<!-- Citation 2 -->
+<div class="p-2.5 rounded bg-surface-container-lowest border border-outline-variant/30 space-y-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[15px]">description</span>
+<span class="font-label-md text-on-surface font-medium text-[12px]">Datadog Custom Contract Amendment #DD-2023-F</span>
+</div>
+<span class="font-mono-code text-[10px] text-tertiary bg-tertiary/10 px-1.5 py-0.5 rounded border border-tertiary/20">
+                0.915 Hybrid Match
+              </span>
+</div>
+<p class="text-[11px] text-on-surface-variant italic pl-6 border-l-2 border-primary/50">
+              "Disputed charges under $1,000 shall be remediated within 48 business hours upon automated verification of duplicate transmission signatures."
+            </p>
+</div>
+<!-- Citation 3 -->
+<div class="p-2.5 rounded bg-surface-container-lowest border border-outline-variant/30 space-y-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary text-[15px]">cloud</span>
+<span class="font-label-md text-on-surface font-medium text-[12px]">AWS US-East-1 Incident Postmortem &amp; Telemetry Sync</span>
+</div>
+<span class="font-mono-code text-[10px] text-tertiary bg-tertiary/10 px-1.5 py-0.5 rounded border border-tertiary/20">
+                0.887 Hybrid Match
+              </span>
+</div>
+<p class="text-[11px] text-on-surface-variant italic pl-6 border-l-2 border-secondary/50">
+              "Incident aws-us-east-1-loss-592 caused duplicate webhook deliveries between 18:41:12 UTC and 18:41:42 UTC due to network partition in availability zone us-east-1a."
+            </p>
+</div>
+</div>
+</section>
+<!-- 6. Inspector Sticky Authorization Controls Bar -->
+<div class="sticky bottom-0 bg-surface-container-high/95 backdrop-blur-md border border-outline-variant/50 p-3.5 rounded shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3 z-40">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-amber-400">admin_panel_settings</span>
+<div>
+<div class="text-[12px] font-semibold text-on-surface">Supervisor Action Mandated</div>
+<div class="text-[10px] text-outline font-mono-code">Override requires incident commander cryptographic key</div>
+</div>
+</div>
+<div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+<button class="h-8 px-2.5 rounded bg-surface-container border border-outline-variant/40 hover:bg-surface-container-highest text-on-surface text-label-md font-label-md transition-colors">
+            Modify Parameters
+          </button>
+<button class="h-8 px-2.5 rounded bg-surface-container border border-error/40 hover:bg-error-container text-error text-label-md font-label-md transition-colors">
+            Reject Action
+          </button>
+<button class="h-8 px-4 rounded bg-tertiary text-on-tertiary font-label-md text-label-md font-semibold hover:bg-tertiary/90 transition-all active:scale-95 flex items-center space-x-1.5 shadow-[0_0_12px_rgba(69,223,164,0.25)]">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Authorize &amp; Execute Refund ($450.00)</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

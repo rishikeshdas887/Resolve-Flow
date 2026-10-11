@@ -161,3 +161,35 @@ def deps_for(settings):
     from app.services.llm import get_llm_provider
     return AgentDeps(settings=settings, session_factory=session_factory,
                      llm=get_llm_provider(settings), embedder=get_embedder(settings))
+
+
+def test_worker_ignores_eval_runs(sf, client, agent_headers, settings, db):
+    """Worker claim and stale recovery must ignore in-process evaluation runs (eval-*)."""
+    from datetime import datetime, timedelta, timezone
+
+    from app.db.models import AgentRun, RunStatus
+    from app.worker import claim_next_run, recover_stale_runs
+
+    t = create_ticket(client, agent_headers)
+    s = session_factory()
+    eval_run = AgentRun(
+        ticket_id=t["id"],
+        status=RunStatus.queued,
+        langgraph_thread_id="eval-test-thread-isolation",
+        provider="deterministic",
+    )
+    s.add(eval_run)
+    s.commit()
+
+    # Worker claim should skip queued runs belonging to eval runner
+    assert claim_next_run(s) is None
+
+    # Stale run recovery should skip eval runs that are running
+    eval_run.status = RunStatus.running
+    eval_run.started_at = datetime.now(timezone.utc) - timedelta(seconds=settings.run_stale_seconds + 60)
+    s.commit()
+
+    recovered = recover_stale_runs(s, settings)
+    assert recovered == 0
+    s.close()
+

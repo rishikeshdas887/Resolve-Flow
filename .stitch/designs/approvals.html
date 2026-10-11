@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResolveFlow Human Approval Queue</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface": "#0f131d",
+            "tertiary-fixed-dim": "#45dfa4",
+            "surface-container-high": "#262a35",
+            "tertiary": "#45dfa4",
+            "primary-container": "#8083ff",
+            "surface-dim": "#0f131d",
+            "surface-container": "#1c1f2a",
+            "on-primary-fixed": "#07006c",
+            "surface-tint": "#c0c1ff",
+            "outline-variant": "#464554",
+            "on-primary": "#1000a9",
+            "secondary-fixed-dim": "#2fd9f4",
+            "tertiary-container": "#00a574",
+            "on-surface-variant": "#c7c4d7",
+            "on-tertiary-fixed-variant": "#005137",
+            "secondary": "#5de6ff",
+            "inverse-surface": "#dfe2f1",
+            "outline": "#908fa0",
+            "on-tertiary-fixed": "#002114",
+            "surface-container-low": "#171b26",
+            "secondary-fixed": "#a2eeff",
+            "error": "#ffb4ab",
+            "on-tertiary": "#003825",
+            "on-background": "#dfe2f1",
+            "background": "#0f131d",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "on-surface": "#dfe2f1",
+            "primary": "#c0c1ff",
+            "on-primary-container": "#0d0096",
+            "secondary-container": "#00cbe6",
+            "on-secondary-container": "#00515d",
+            "surface-container-highest": "#313540",
+            "on-error": "#690005",
+            "error-container": "#93000a",
+            "surface-container-lowest": "#0a0e18",
+            "on-secondary-fixed": "#001f25",
+            "on-secondary-fixed-variant": "#004e5a",
+            "inverse-on-surface": "#2c303b",
+            "primary-fixed": "#e1e0ff",
+            "inverse-primary": "#494bd6",
+            "on-secondary": "#00363e",
+            "tertiary-fixed": "#68fcbf",
+            "on-error-container": "#ffdad6",
+            "surface-variant": "#313540",
+            "surface-bright": "#353944",
+            "primary-fixed-dim": "#c0c1ff",
+            "on-tertiary-container": "#003120"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "margin": "1rem",
+            "margin-desktop": "1.5rem",
+            "gutter": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "gutter-desktop": "1rem",
+            "space-xl": "1.5rem",
+            "space-md": "0.75rem",
+            "space-lg": "1rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "mono-metric": ["Geist"],
+            "mono-code": ["Geist"],
+            "headline-lg-mobile": ["Inter"],
+            "body-md": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-lg": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "mono-metric": ["1.5rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "mono-code": ["0.75rem", { "lineHeight": "1.25rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.375rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "label-md": ["0.8125rem", { "lineHeight": "1rem", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-xl": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "headline-md": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-lg": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "body-sm": ["0.75rem", { "lineHeight": "1.125rem", "letterSpacing": "0.01em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 1.125rem;
+      vertical-align: middle;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f131d;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #1f293d;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #374151;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
+<!-- TOP APP BAR (Shared Components JSON Anchor: TopNavBar) -->
+<header class="bg-surface-container-lowest dark:bg-surface-container-lowest border-b border-outline-variant/30 sticky top-0 z-50 flex items-center justify-between px-space-xl h-14 w-full">
+<!-- Brand / Product Logo -->
+<div class="flex items-center space-x-6">
+<div class="flex items-center space-x-2">
+<div class="w-7 h-7 bg-primary flex items-center justify-center rounded text-on-primary font-mono-code font-bold text-xs tracking-tighter">
+          RF
+        </div>
+<div class="flex items-baseline space-x-2">
+<span class="font-headline-md text-headline-md font-semibold text-on-surface dark:text-on-surface tracking-tight">ResolveFlow</span>
+<span class="font-mono-code text-[11px] text-primary/80 bg-surface-container-high px-1.5 py-0.5 rounded border border-outline-variant/30 font-medium tracking-wide">OPS v2.4</span>
+</div>
+</div>
+<!-- Navigation Links from Shared Components JSON -->
+<nav class="hidden md:flex items-center space-x-6 h-14 pt-3.5">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface font-label-md text-label-md pb-3 transition-colors" href="#">Dashboard</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface font-label-md text-label-md pb-3 transition-colors" href="#">Tickets</a>
+<!-- Active Tab: Approvals with Counter Badge -->
+<a class="text-primary dark:text-primary font-label-md text-label-md border-b-2 border-primary dark:border-primary pb-3 flex items-center space-x-1.5" href="#">
+<span>Approvals</span>
+<span class="px-1.5 py-0.2 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full text-[10px] font-mono-code font-semibold leading-none">14</span>
+</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface font-label-md text-label-md pb-3 transition-colors" href="#">Knowledge</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface font-label-md text-label-md pb-3 transition-colors" href="#">Audit</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface font-label-md text-label-md pb-3 transition-colors" href="#">Evals</a>
+</nav>
+</div>
+<!-- Trailing Actions & Search -->
+<div class="flex items-center space-x-3">
+<!-- Search Bar -->
+<div class="relative hidden sm:block w-64">
+<span class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[16px]">search</span>
+</span>
+<input class="w-full h-8 pl-8 pr-3 text-xs bg-surface-container-low border border-[#1f293d] rounded text-on-surface placeholder:text-outline focus:outline-none focus:border-primary transition-colors" placeholder="Filter command (Cmd+K)" type="text"/>
+</div>
+<!-- Icon Actions -->
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/50 transition-colors" title="Notifications">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/50 transition-colors" title="Settings">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/50 transition-colors" title="Documentation">
+<span class="material-symbols-outlined text-[18px]">help</span>
+</button>
+<div class="h-4 w-px bg-outline-variant/40"></div>
+<!-- Trailing Primary Action -->
+<button class="h-8 px-3 bg-primary text-on-primary font-label-md text-label-md font-medium rounded flex items-center space-x-1.5 hover:bg-primary-container transition-all active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+<span>Deploy Agent</span>
+</button>
+<!-- Profile Avatar -->
+<div class="flex items-center pl-1">
+<div class="w-8 h-8 rounded-full border border-primary/40 bg-surface-container-high flex items-center justify-center text-xs font-mono-code text-primary" title="Lead Incident Commander avatar">
+          AM
+        </div>
+</div>
+</div>
+</header>
+<!-- SUB-BAR / KPI TELEMETRY STRIP -->
+<section class="bg-surface-container-low border-b border-[#1f293d] px-space-xl py-3 flex-shrink-0">
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+<!-- Title + Intercept Badge -->
+<div class="flex items-center flex-wrap gap-2.5">
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight flex items-center gap-2">
+<span>Human-in-the-Loop Approval Queue</span>
+</h1>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-mono-code font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+          Tier-3 Sensitive Action Intercept
+        </span>
+</div>
+<!-- KPI Widgets -->
+<div class="flex items-center flex-wrap gap-3 font-mono-code text-xs">
+<!-- 14 Pending -->
+<div class="flex items-center space-x-2 bg-surface-container px-3 py-1.5 rounded border border-[#1f293d]">
+<span class="w-2 h-2 rounded-full bg-amber-400"></span>
+<span class="text-on-surface font-semibold">14 Pending</span>
+<span class="text-outline">|</span>
+<span class="text-amber-300/90 font-mono-code">P95 SLA &lt; 4m</span>
+</div>
+<!-- 142 Approved Today -->
+<div class="flex items-center space-x-2 bg-surface-container px-3 py-1.5 rounded border border-[#1f293d]">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="text-on-surface font-semibold">142 Approved</span>
+<span class="text-outline">|</span>
+<span class="text-tertiary-fixed-dim font-mono-code">$84,210 authorized</span>
+<span class="text-outline text-[10px]">(0% breach)</span>
+</div>
+<!-- 9 Rejected -->
+<div class="flex items-center space-x-2 bg-surface-container px-3 py-1.5 rounded border border-[#1f293d]">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="text-on-surface font-semibold">9 Overridden</span>
+<span class="text-outline">|</span>
+<span class="text-error font-mono-code">Risk Mitigated</span>
+</div>
+<!-- Policy Gate Status -->
+<div class="hidden xl:flex items-center space-x-1.5 bg-surface-container-high/60 px-3 py-1.5 rounded border border-[#1f293d] text-on-surface-variant text-[11px]">
+<span class="material-symbols-outlined text-secondary text-[14px]">verified_user</span>
+<span>Dual Sign-Off Gate: Refunds &gt; $250 &amp; Auth Escalation</span>
+</div>
+</div>
+</div>
+<!-- Filter Bar & Quick Controls -->
+<div class="mt-3 pt-3 border-t border-[#1f293d]/60 flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+<!-- Filter Pills -->
+<div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1 md:pb-0 text-xs">
+<button class="px-2.5 py-1 rounded font-medium bg-primary text-on-primary transition-colors flex items-center space-x-1">
+<span>All</span>
+<span class="text-[10px] font-mono-code px-1 bg-on-primary/20 rounded">14</span>
+</button>
+<button class="px-2.5 py-1 rounded font-medium bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-[#1f293d] transition-colors flex items-center space-x-1">
+<span>Financial / Refunds</span>
+<span class="text-[10px] font-mono-code text-amber-300">6</span>
+</button>
+<button class="px-2.5 py-1 rounded font-medium bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-[#1f293d] transition-colors flex items-center space-x-1">
+<span>Identity / ATO</span>
+<span class="text-[10px] font-mono-code text-error">4</span>
+</button>
+<button class="px-2.5 py-1 rounded font-medium bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-[#1f293d] transition-colors flex items-center space-x-1">
+<span>Privileged Access</span>
+<span class="text-[10px] font-mono-code text-secondary">3</span>
+</button>
+<button class="px-2.5 py-1 rounded font-medium bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-[#1f293d] transition-colors flex items-center space-x-1">
+<span>Data Deletion</span>
+<span class="text-[10px] font-mono-code text-outline">1</span>
+</button>
+</div>
+<!-- Quick Options -->
+<div class="flex items-center space-x-3 text-xs">
+<label class="flex items-center space-x-2 cursor-pointer select-none text-on-surface-variant hover:text-on-surface transition-colors">
+<input checked="" class="w-3.5 h-3.5 rounded border-[#374151] bg-[#0b0f19] text-primary focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="font-label-sm text-label-sm">Auto-claim next on resolve</span>
+</label>
+<div class="h-3 w-px bg-outline-variant/30"></div>
+<button class="text-on-surface-variant hover:text-on-surface flex items-center space-x-1" title="Refresh queue">
+<span class="material-symbols-outlined text-[15px]">refresh</span>
+<span class="font-label-sm text-label-sm">Live (Sync 1s)</span>
+</button>
+</div>
+</div>
+</section>
+<!-- MAIN SPLIT WORKSPACE -->
+<main class="flex-1 flex overflow-hidden">
+<!-- LEFT COLUMN: Approval Queue Feed (approx 36%) -->
+<aside class="w-full lg:w-[36%] border-r border-[#1f293d] bg-surface-container-low flex flex-col h-[calc(100vh-178px)] overflow-hidden">
+<!-- List Controls Toolbar -->
+<div class="px-space-md py-2.5 border-b border-[#1f293d] bg-surface flex items-center justify-between text-xs">
+<div class="flex items-center space-x-2">
+<input class="w-3.5 h-3.5 rounded border-[#374151] bg-[#0b0f19] text-primary focus:ring-0" type="checkbox"/>
+<span class="font-mono-code text-[11px] text-outline uppercase font-semibold">14 Intercepts in Queue</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-outline text-[11px]">Sort:</span>
+<select class="bg-surface-container-low border border-[#1f293d] text-on-surface rounded text-[11px] py-0.5 px-2 focus:border-primary focus:outline-none font-mono-code">
+<option>SLA Urgency (ASC)</option>
+<option>Risk Score (DESC)</option>
+<option>Amount ($ DESC)</option>
+</select>
+</div>
+</div>
+<!-- Cards Container (High-density scroll) -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-space-sm space-y-2">
+<!-- CARD 1: Selected / Active (#TK-9844) -->
+<div class="relative bg-surface-container p-3 rounded border-2 border-primary/80 shadow-[0_0_12px_rgba(99,102,241,0.15)] cursor-pointer transition-all">
+<div class="absolute top-2.5 right-2.5 flex items-center space-x-1.5">
+<span class="px-1.5 py-0.5 rounded text-[10px] font-mono-code font-bold bg-amber-500/15 text-amber-300 border border-amber-500/40 animate-pulse">
+              02m 14s SLA
+            </span>
+</div>
+<div class="flex items-center space-x-2 mb-1.5">
+<span class="font-mono-code text-xs font-semibold text-primary">#TK-9844</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] font-mono-code bg-surface-container-high text-on-surface-variant border border-outline-variant/30">PENDING DUAL-AUTH</span>
+</div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-mono-code font-semibold text-sm text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-amber-400 text-[16px]">payments</span>
+              issue_refund <span class="text-tertiary-fixed-dim">($450.00)</span>
+</span>
+</div>
+<p class="text-xs text-on-surface-variant font-body-sm line-clamp-1 mb-2">
+            Datadog Org (Enterprise) • Agent <span class="text-secondary font-mono-code">Billing-Flow-v3</span> (Claude 3.5)
+          </p>
+<div class="bg-surface-container-lowest/80 p-2 rounded border border-[#1f293d] text-[11px] mb-2 flex items-center justify-between">
+<div class="flex items-center space-x-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-amber-400 text-[14px]">warning</span>
+<span>Intercept: Exceeds $250 auto-threshold</span>
+</div>
+<div class="font-mono-code font-bold text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
+              Risk: 84
+            </div>
+</div>
+<div class="flex items-center justify-between text-[10px] font-mono-code text-outline">
+<span>Customer: Enterprise Platinum</span>
+<span>Gate: POL-FIN-025</span>
+</div>
+</div>
+<!-- CARD 2: #TK-9843 -->
+<div class="bg-surface-container hover:bg-surface-container-high/60 p-3 rounded border border-[#1f293d] cursor-pointer transition-colors">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-xs font-semibold text-on-surface">#TK-9843</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] font-mono-code bg-red-500/15 text-error border border-red-500/30">CRITICAL RISK</span>
+</div>
+<span class="font-mono-code text-[11px] text-amber-400">05m 48s</span>
+</div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-mono-code font-semibold text-xs text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-error text-[15px]">lock_reset</span>
+              account_override <span class="text-outline font-normal">(MFA Reset)</span>
+</span>
+<span class="font-mono-code text-xs font-bold text-error bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20">92/100</span>
+</div>
+<p class="text-xs text-on-surface-variant line-clamp-1 mb-1.5">
+            Figma Team (FinTech Tier) via <span class="text-secondary font-mono-code">Auth-Shield-v2</span>
+</p>
+<div class="text-[11px] text-outline font-body-sm flex items-center space-x-1">
+<span class="material-symbols-outlined text-[13px] text-error">gpp_bad</span>
+<span class="truncate">Anomalous IP mismatch (Berlin → Lagos)</span>
+</div>
+</div>
+<!-- CARD 3: #TK-9842 -->
+<div class="bg-surface-container hover:bg-surface-container-high/60 p-3 rounded border border-[#1f293d] cursor-pointer transition-colors">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-xs font-semibold text-on-surface">#TK-9842</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] font-mono-code bg-surface-container-high text-on-surface-variant">SEV-2</span>
+</div>
+<span class="font-mono-code text-[11px] text-on-surface-variant">11m 30s</span>
+</div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-mono-code font-semibold text-xs text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[15px]">key</span>
+              webhook_secret_regen
+            </span>
+<span class="font-mono-code text-xs font-bold text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">68/100</span>
+</div>
+<p class="text-xs text-on-surface-variant line-clamp-1 mb-1.5">
+            Ramp Technologies via <span class="text-secondary font-mono-code">API-Orchestrator</span>
+</p>
+<div class="text-[11px] text-outline font-body-sm flex items-center space-x-1">
+<span class="material-symbols-outlined text-[13px]">info</span>
+<span class="truncate">Production environment credential wipe</span>
+</div>
+</div>
+<!-- CARD 4: #TK-9847 -->
+<div class="bg-surface-container hover:bg-surface-container-high/60 p-3 rounded border border-[#1f293d] cursor-pointer transition-colors">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-xs font-semibold text-on-surface">#TK-9847</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] font-mono-code bg-amber-500/10 text-amber-300 border border-amber-500/20">HIGH VALUE</span>
+</div>
+<span class="font-mono-code text-[11px] text-on-surface-variant">14m 10s</span>
+</div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-mono-code font-semibold text-xs text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-amber-400 text-[15px]">credit_card</span>
+              issue_refund <span class="text-tertiary-fixed-dim">($1,200.00)</span>
+</span>
+<span class="font-mono-code text-xs font-bold text-error bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20">88/100</span>
+</div>
+<p class="text-xs text-on-surface-variant line-clamp-1 mb-1.5">
+            Stripe Connect Partner via <span class="text-secondary font-mono-code">Billing-Flow-v3</span>
+</p>
+<div class="text-[11px] text-outline font-body-sm flex items-center space-x-1">
+<span class="material-symbols-outlined text-[13px]">history_toggle_off</span>
+<span class="truncate">Chargeback window &gt; 60 days dispute</span>
+</div>
+</div>
+<!-- CARD 5: #TK-9850 -->
+<div class="bg-surface-container hover:bg-surface-container-high/60 p-3 rounded border border-[#1f293d] cursor-pointer transition-colors">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-xs font-semibold text-on-surface">#TK-9850</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] font-mono-code bg-surface-container-high text-on-surface-variant">PROVISIONING</span>
+</div>
+<span class="font-mono-code text-[11px] text-on-surface-variant">19m 45s</span>
+</div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-mono-code font-semibold text-xs text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-[15px]">group_add</span>
+              org_seat_license_grant <span class="text-outline font-normal">(+50 seats)</span>
+</span>
+<span class="font-mono-code text-xs font-bold text-on-surface-variant bg-surface-container-high px-1.5 py-0.5 rounded">55/100</span>
+</div>
+<p class="text-xs text-on-surface-variant line-clamp-1 mb-1.5">
+            Vercel Platform via <span class="text-secondary font-mono-code">Sub-Manager-v4</span>
+</p>
+<div class="text-[11px] text-outline font-body-sm flex items-center space-x-1">
+<span class="material-symbols-outlined text-[13px]">timer</span>
+<span class="truncate">Enterprise trial extension approval</span>
+</div>
+</div>
+<!-- CARD 6: #TK-9852 -->
+<div class="bg-surface-container hover:bg-surface-container-high/60 p-3 rounded border border-[#1f293d] cursor-pointer transition-colors">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-xs font-semibold text-on-surface">#TK-9852</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] font-mono-code bg-red-500/20 text-error border border-red-500/40">GDPR PURGE</span>
+</div>
+<span class="font-mono-code text-[11px] text-on-surface-variant">24m 00s</span>
+</div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-mono-code font-semibold text-xs text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-error text-[15px]">delete_forever</span>
+              gdpr_pii_hard_delete
+            </span>
+<span class="font-mono-code text-xs font-bold text-error bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20">HIGH</span>
+</div>
+<p class="text-xs text-on-surface-variant line-clamp-1 mb-1.5">
+            Revolut EU via <span class="text-secondary font-mono-code">Privacy-Guard</span>
+</p>
+<div class="text-[11px] text-outline font-body-sm flex items-center space-x-1">
+<span class="material-symbols-outlined text-[13px] text-error">dangerous</span>
+<span class="truncate">Unreversible customer DB data purge</span>
+</div>
+</div>
+</div>
+<!-- Quick footer pagination / status -->
+<div class="p-2 border-t border-[#1f293d] bg-surface-container-lowest text-center font-mono-code text-[11px] text-outline">
+        Showing 1-6 of 14 queue items • P95 resolution target 04m 00s
+      </div>
+</aside>
+<!-- RIGHT COLUMN: Detailed Approval Workspace (#TK-9844) (approx 64%) -->
+<section class="flex-1 bg-surface flex flex-col h-[calc(100vh-178px)] overflow-y-auto custom-scrollbar">
+<!-- Case Header Banner -->
+<div class="p-space-lg bg-surface-container-low border-b border-[#1f293d] sticky top-0 z-20">
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-3">
+<div>
+<div class="flex items-center space-x-2.5 mb-1.5">
+<span class="font-mono-code text-base font-bold text-primary">#TK-9844</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-mono-code font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center space-x-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+<span>PENDING SUPERVISOR AUTHORIZATION</span>
+</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-mono-code bg-surface-container-high text-on-surface-variant border border-outline-variant/30">
+                P95 SLA: 02m 14s left
+              </span>
+</div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">
+              Stripe billing exception &amp; refund credit dispute &gt; $450
+            </h2>
+</div>
+<!-- Quick Action Shortcuts -->
+<div class="flex items-center space-x-2">
+<button class="px-2.5 py-1.5 bg-surface-container hover:bg-surface-container-high border border-[#1f293d] rounded text-xs font-label-md text-on-surface-variant hover:text-on-surface flex items-center space-x-1 transition-colors">
+<span class="material-symbols-outlined text-[15px]">share</span>
+<span>Handoff</span>
+</button>
+<button class="px-2.5 py-1.5 bg-surface-container hover:bg-surface-container-high border border-[#1f293d] rounded text-xs font-label-md text-on-surface-variant hover:text-on-surface flex items-center space-x-1 transition-colors">
+<span class="material-symbols-outlined text-[15px]">history</span>
+<span>Audit Log</span>
+</button>
+</div>
+</div>
+<!-- Telemetry Metadata Bar -->
+<div class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2 pt-3 border-t border-[#1f293d]/70 text-xs">
+<!-- Org context -->
+<div class="bg-surface-container/60 p-2 rounded border border-[#1f293d]">
+<div class="text-[10px] uppercase font-mono-code text-outline font-semibold">Customer Account</div>
+<div class="font-medium text-on-surface truncate">Datadog Org</div>
+<div class="text-[11px] font-mono-code text-secondary">Enterprise Platinum • $34.5k MRR</div>
+</div>
+<!-- Account Rep & SLA -->
+<div class="bg-surface-container/60 p-2 rounded border border-[#1f293d]">
+<div class="text-[10px] uppercase font-mono-code text-outline font-semibold">Account Exec &amp; SLA</div>
+<div class="font-medium text-on-surface">Sarah Chen</div>
+<div class="text-[11px] font-mono-code text-tertiary-fixed-dim">15-min Guaranteed Response</div>
+</div>
+<!-- Agent Origin -->
+<div class="bg-surface-container/60 p-2 rounded border border-[#1f293d]">
+<div class="text-[10px] uppercase font-mono-code text-outline font-semibold">Autonomous Agent</div>
+<div class="font-medium text-secondary font-mono-code">Billing-Flow-v3</div>
+<div class="text-[11px] text-outline font-mono-code">Claude 3.5 Sonnet (99.1% conf)</div>
+</div>
+<!-- Trace Telemetry -->
+<div class="bg-surface-container/60 p-2 rounded border border-[#1f293d]">
+<div class="text-[10px] uppercase font-mono-code text-outline font-semibold">Trace &amp; Execution Latency</div>
+<div class="font-mono-code text-on-surface text-[11px]">tr_84f9a0c12e</div>
+<div class="text-[11px] text-tertiary font-mono-code">1.24s inference time</div>
+</div>
+</div>
+</div>
+<!-- Investigation Sections (Bento Layout) -->
+<div class="p-space-lg space-y-4 flex-1">
+<!-- GRID ROW 1: Customer Ticket Message vs Autonomous Agent Pre-Analysis -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+<!-- 1. Customer Ticket Message -->
+<div class="bg-surface-container-low p-4 rounded border border-[#1f293d] flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-mono-code uppercase font-semibold text-outline flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]">chat</span>
+                  Ticket Conversation Excerpt
+                </span>
+<span class="font-mono-code text-[10px] text-outline">Oct 14, 18:42 UTC</span>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded border border-[#1f293d] text-xs font-body-md text-on-surface leading-relaxed">
+<p class="font-medium text-primary mb-1">Datadog DevOps Lead (David Kowalski):</p>
+                "We were mistakenly double-charged for our enterprise log ingestion spike during AWS US-East outage on Oct 14. We request immediate credit reversal of <span class="font-mono-code font-bold text-amber-300">$450.00</span> on invoice <span class="font-mono-code text-secondary">#INV-99214</span>."
+              </div>
+</div>
+<div class="mt-2.5 flex items-center justify-between text-[11px] text-outline">
+<span>Channel: Slack Connect Bridge</span>
+<span class="font-mono-code text-tertiary">Verified Customer Signature ✓</span>
+</div>
+</div>
+<!-- Autonomous Pre-Analysis -->
+<div class="bg-surface-container-low p-4 rounded border border-[#1f293d] flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-mono-code uppercase font-semibold text-secondary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">psychology</span>
+                  Autonomous Agent Pre-Analysis
+                </span>
+<span class="font-mono-code text-[10px] bg-secondary-fixed/10 text-secondary px-1.5 py-0.5 rounded border border-secondary/20">Deterministic Match</span>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded border border-[#1f293d] text-xs font-body-md text-on-surface leading-relaxed">
+<p class="text-on-surface-variant mb-1">
+                  Agent cross-referenced AWS status incident <code class="text-secondary font-mono-code">aws-us-east-1-loss-592</code> against Datadog telemetry ingress stream.
+                </p>
+<div class="p-2 bg-surface-container/70 rounded border border-[#1f293d] font-mono-code text-[11px] text-tertiary-fixed-dim">
+                  &gt; Telemetry verified: Charge #ch_3N8x7b was captured twice in 30 seconds (18:41:12 UTC &amp; 18:41:42 UTC).
+                </div>
+</div>
+</div>
+<div class="mt-2.5 flex items-center justify-between text-[11px] text-outline">
+<span>Model: Claude 3.5 Sonnet Tool Use</span>
+<span class="font-mono-code text-secondary font-semibold">Tool: db.query_billing_ledger</span>
+</div>
+</div>
+</div>
+<!-- SECTION 2: Proposed Action Payload & API Call Details -->
+<div class="bg-surface-container-low rounded border border-[#1f293d] overflow-hidden">
+<div class="px-4 py-2.5 bg-surface-container border-b border-[#1f293d] flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-tertiary text-[17px]">code_blocks</span>
+<span class="font-mono-code text-xs font-semibold text-on-surface">Proposed Action Payload: <span class="text-tertiary">stripe.refunds.create</span></span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-[11px] text-outline">Destination: <span class="text-on-surface font-semibold">acct_datadog_ent_primary</span></span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-mono-code bg-surface-container-high text-on-surface-variant border border-outline-variant/30">Visa ending 4092</span>
+</div>
+</div>
+<div class="p-3 bg-[#070a11] font-mono-code text-xs text-on-surface overflow-x-auto custom-scrollbar border-b border-[#1f293d]">
+<pre class="leading-5"><span class="text-outline">// Prepared payload intercepted before outbound webhook execution</span>
+{
+  <span class="text-secondary">"action"</span>: <span class="text-tertiary-fixed-dim">"stripe.refunds.create"</span>,
+  <span class="text-secondary">"charge_id"</span>: <span class="text-amber-300">"ch_3N8x7b99214_sec"</span>,
+  <span class="text-secondary">"amount_cents"</span>: <span class="text-primary font-bold">45000</span>, <span class="text-outline">// USD $450.00</span>
+  <span class="text-secondary">"currency"</span>: <span class="text-tertiary-fixed-dim">"usd"</span>,
+  <span class="text-secondary">"reason"</span>: <span class="text-tertiary-fixed-dim">"duplicate_charge_outage"</span>,
+  <span class="text-secondary">"metadata"</span>: {
+    <span class="text-secondary">"ticket_id"</span>: <span class="text-tertiary-fixed-dim">"TK-9844"</span>,
+    <span class="text-secondary">"agent_model"</span>: <span class="text-tertiary-fixed-dim">"Billing-Flow-v3"</span>,
+    <span class="text-secondary">"intercepted_by"</span>: <span class="text-tertiary-fixed-dim">"POL-FIN-025"</span>,
+    <span class="text-secondary">"approved_by"</span>: <span class="text-amber-400 font-semibold">"PENDING_HUMAN"</span>,
+    <span class="text-secondary">"execution_lock"</span>: <span class="text-tertiary-fixed-dim">"LOCK_AWAITING_SUPERVISOR_SIG"</span>
+  }
+}</pre>
+</div>
+</div>
+<!-- SECTION 3: Policy Engine Interception Reason & Automated Guardrail Evaluation -->
+<div class="bg-surface-container-low p-4 rounded border border-[#1f293d]">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center space-x-2">
+<span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+<span class="font-mono-code text-xs uppercase font-bold text-on-surface">Policy Engine Interception: <span class="text-amber-300">POL-FIN-025</span></span>
+</div>
+<span class="text-xs font-mono-code text-outline">Triggered at Stage: Pre-Commit Validation</span>
+</div>
+<div class="p-3 bg-surface-container-lowest rounded border border-[#1f293d] mb-3 text-xs leading-relaxed text-on-surface">
+<span class="font-semibold text-amber-300">Rule POL-FIN-025 (Financial Threshold Intercept): </span>
+            Autonomous agents possess automated discretionary authority up to <strong class="text-on-surface font-mono-code">$250.00</strong>. Action requested: <strong class="text-primary font-mono-code">$450.00</strong>. Transactions between $250.01 and $5,000.00 mandate Level-2 Human Incident Supervisor review and reason logging prior to settlement.
+          </div>
+<!-- Guardrail check pills -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+<div class="bg-surface-container p-2 rounded border border-[#1f293d] flex items-center space-x-2">
+<span class="material-symbols-outlined text-tertiary text-[16px]">check_circle</span>
+<span class="text-[11px] font-mono-code text-on-surface">PCI-DSS Card Masking: PASSED</span>
+</div>
+<div class="bg-surface-container p-2 rounded border border-[#1f293d] flex items-center space-x-2">
+<span class="material-symbols-outlined text-tertiary text-[16px]">check_circle</span>
+<span class="text-[11px] font-mono-code text-on-surface">Sanction Check (OFAC): CLEAR</span>
+</div>
+<div class="bg-surface-container p-2 rounded border border-[#1f293d] flex items-center space-x-2">
+<span class="material-symbols-outlined text-tertiary text-[16px]">check_circle</span>
+<span class="text-[11px] font-mono-code text-on-surface">72h Velocity Dispute: NONE</span>
+</div>
+</div>
+</div>
+<!-- SECTION 4: Cited Knowledge & Policy Evidence Excerpts (RAG) -->
+<div class="bg-surface-container-low p-4 rounded border border-[#1f293d]">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[17px]">menu_book</span>
+<span class="font-mono-code text-xs font-semibold text-on-surface">Cited Policy Evidence Excerpts (RAG Index: <span class="text-primary">Pinecone/refund-policy-v4</span>)</span>
+</div>
+<span class="text-[11px] font-mono-code text-outline">Vector Cosine Top-2</span>
+</div>
+<div class="space-y-2 text-xs">
+<div class="p-3 bg-surface-container-lowest rounded border border-[#1f293d] flex flex-col md:flex-row md:items-start justify-between gap-2">
+<div class="space-y-1">
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-primary font-semibold text-[11px]">Chunk #1 • Section 4.2: Billing Exceptions During Cloud Outages</span>
+</div>
+<p class="text-on-surface-variant font-body-sm leading-relaxed">
+                  "Customers on Enterprise SLA tiers qualify for full retroactive compute credit if failure originates from verified upstream cloud partner outages."
+                </p>
+</div>
+<span class="font-mono-code text-[11px] text-tertiary bg-tertiary/10 px-2 py-0.5 rounded border border-tertiary/20 self-start">
+                Cosine: 0.941
+              </span>
+</div>
+<div class="p-3 bg-surface-container-lowest rounded border border-[#1f293d] flex flex-col md:flex-row md:items-start justify-between gap-2">
+<div class="space-y-1">
+<div class="flex items-center space-x-2">
+<span class="font-mono-code text-primary font-semibold text-[11px]">Chunk #2 • Section 8.1: Dual Authorization Protocols</span>
+</div>
+<p class="text-on-surface-variant font-body-sm leading-relaxed">
+                  "Refund amounts exceeding $250 require manual audit note stating root cause before webhook execution."
+                </p>
+</div>
+<span class="font-mono-code text-[11px] text-tertiary bg-tertiary/10 px-2 py-0.5 rounded border border-tertiary/20 self-start">
+                Cosine: 0.915
+              </span>
+</div>
+</div>
+</div>
+<!-- SECTION 5: Reviewer Decision Controls & Audit Trail Input -->
+<div class="bg-surface-container-low p-4 rounded border-2 border-primary/40 bg-gradient-to-b from-surface-container-low to-surface-container">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+<span class="font-headline-md text-sm font-semibold text-on-surface">Supervisor Decision &amp; Audit Commitment</span>
+</div>
+<div class="flex items-center space-x-2 text-xs font-mono-code text-outline">
+<span>Reviewer:</span>
+<span class="text-on-surface font-semibold bg-surface-container-high px-2 py-0.5 rounded border border-[#1f293d]">Alex Mercer (Staff Ops Commander)</span>
+</div>
+</div>
+<!-- Quick Template Chips -->
+<div class="mb-2.5 flex items-center flex-wrap gap-1.5 text-xs">
+<span class="text-[11px] font-mono-code text-outline">Pre-fill rationale:</span>
+<button class="px-2 py-0.5 bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-[#1f293d] rounded text-[11px] font-mono-code transition-colors">
+              + "Approved: Validated AWS incident overlap"
+            </button>
+<button class="px-2 py-0.5 bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-[#1f293d] rounded text-[11px] font-mono-code transition-colors">
+              + "Rejected: Amount exceeds tier policy"
+            </button>
+<button class="px-2 py-0.5 bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-[#1f293d] rounded text-[11px] font-mono-code transition-colors">
+              + "Escalate to Finance VP"
+            </button>
+</div>
+<!-- Decision Note Textarea -->
+<div class="relative mb-3">
+<textarea class="w-full bg-[#0b0f19] border border-[#1f293d] rounded p-2.5 text-xs font-mono-code text-on-surface placeholder:text-outline focus:outline-none focus:border-primary transition-colors resize-none" placeholder="Enter obligatory supervisor rationale for audit log before committing action... (e.g., Validated dual-charge log matching AWS incident telemetry #aws-us-east-1-loss-592. Verified customer tier.)" rows="3">Validated dual-charge log matching AWS incident telemetry #aws-us-east-1-loss-592. Verified customer tier Enterprise Platinum qualifies under Section 4.2 cloud exception.</textarea>
+</div>
+<!-- Learning Checkbox -->
+<div class="flex items-center space-x-2 mb-4">
+<input checked="" class="w-3.5 h-3.5 rounded border-[#374151] bg-[#0b0f19] text-primary focus:ring-0" id="rag-calibrate" type="checkbox"/>
+<label class="text-xs text-on-surface-variant font-label-md select-none cursor-pointer" for="rag-calibrate">
+              Log precedent rule into Knowledge Base RAG for future autonomous calibration
+            </label>
+</div>
+<!-- Action Buttons Bar -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-[#1f293d]">
+<div class="flex items-center space-x-2 w-full sm:w-auto">
+<!-- Reject Action Button -->
+<button class="w-full sm:w-auto px-4 py-2 bg-red-950/40 hover:bg-red-900/60 border border-red-500/40 text-error hover:text-white rounded text-xs font-label-md font-semibold flex items-center justify-center space-x-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span>Reject Action</span>
+</button>
+<!-- Request Agent Clarification -->
+<button class="w-full sm:w-auto px-4 py-2 bg-surface-container hover:bg-surface-container-high border border-[#1f293d] text-on-surface-variant hover:text-on-surface rounded text-xs font-label-md font-semibold flex items-center justify-center space-x-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">sync_problem</span>
+<span>Re-triage / Clarify</span>
+</button>
+</div>
+<!-- Primary Authorize & Execute Button (Emerald Green Glow) -->
+<button class="w-full sm:w-auto px-6 py-2.5 bg-tertiary-container hover:bg-tertiary text-on-tertiary rounded text-xs font-label-md font-bold flex items-center justify-center space-x-2 shadow-[0_0_15px_rgba(69,223,164,0.35)] hover:shadow-[0_0_20px_rgba(69,223,164,0.55)] transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>Authorize &amp; Execute Refund ($450.00)</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>
