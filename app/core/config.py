@@ -50,6 +50,16 @@ class Settings(BaseSettings):
     run_retry_backoff_seconds: float = 5.0
     run_stale_seconds: float = 600.0  # a "running" run older than this is recovered
 
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def _normalize_db_url(cls, v: str) -> str:
+        if isinstance(v, str):
+            if v.startswith("postgres://"):
+                return "postgresql+psycopg://" + v[len("postgres://"):]
+            if v.startswith("postgresql://") and not v.startswith("postgresql+"):
+                return "postgresql+psycopg://" + v[len("postgresql://"):]
+        return v
+
     @field_validator("cors_origins")
     @classmethod
     def _cors_not_blank(cls, v: str) -> str:

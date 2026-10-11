@@ -16,6 +16,10 @@ class ApprovalOut(BaseModel):
     decision_note: str | None
     decided_at: datetime | None
     created_at: datetime
+    run_status: str | None = None
+    ticket_status: str | None = None
+    is_actionable: bool = True
+    stale_reason: str | None = None
 
 
 class ApprovalDecision(BaseModel):

@@ -48,13 +48,14 @@ export const ApprovalsPage: React.FC<ApprovalsPageProps> = ({
     }
     try {
       if (detailed.run_id) {
+        detailed.run = await api.getRun(detailed.run_id);
         const props = await api.getRunProposal(detailed.run_id);
         detailed.action = props.find((p) => p.id === detailed.action_id) || props[0];
         const evs = await api.getRunEvidence(detailed.run_id);
         setEvidence(evs);
       }
     } catch (e) {
-      console.warn('Could not load action or evidence for approval', e);
+      console.warn('Could not load action, run or evidence for approval', e);
     }
     return detailed;
   };
@@ -353,7 +354,26 @@ export const ApprovalsPage: React.FC<ApprovalsPageProps> = ({
                     >
                       ID: {item.id.slice(0, 8)}
                     </span>
-                    <StatusBadge status={item.status} size="sm" />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <StatusBadge status={item.status} size="sm" />
+                      {item.status === 'pending' && item.is_actionable === false && (
+                        <span
+                          style={{
+                            fontSize: '10px',
+                            fontWeight: 600,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.04em',
+                            padding: '1px 6px',
+                            borderRadius: '4px',
+                            backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                            color: '#f87171',
+                            border: '1px solid rgba(239, 68, 68, 0.3)',
+                          }}
+                        >
+                          Inactive
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div style={{ fontWeight: 600, fontSize: '13px', color: '#f8fafc', marginBottom: '6px' }}>
@@ -412,7 +432,31 @@ export const ApprovalsPage: React.FC<ApprovalsPageProps> = ({
                     Action ID: {selectedApproval.action_id?.slice(0, 8) || selectedApproval.id.slice(0, 8)}
                   </h2>
                 </div>
-                <StatusBadge status={selectedApproval.status} size="md" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {selectedApproval.status === 'pending' && (
+                    selectedApproval.is_actionable === false ||
+                    (selectedApproval.run && selectedApproval.run.status !== 'awaiting_approval') ||
+                    (selectedApproval.run_status && selectedApproval.run_status !== 'awaiting_approval') ||
+                    (selectedApproval.ticket_status && selectedApproval.ticket_status !== 'pending_approval')
+                  ) && (
+                    <span
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        backgroundColor: 'rgba(239, 68, 68, 0.15)',
+                        color: '#f87171',
+                        border: '1px solid rgba(239, 68, 68, 0.3)',
+                      }}
+                    >
+                      Inactive / Conflict
+                    </span>
+                  )}
+                  <StatusBadge status={selectedApproval.status} size="md" />
+                </div>
               </div>
 
               {/* Policy Reason Box */}
@@ -642,59 +686,139 @@ export const ApprovalsPage: React.FC<ApprovalsPageProps> = ({
 
               {/* Action Decision Form (only if pending) */}
               {selectedApproval.status === 'pending' && (
-                <div
-                  style={{
-                    borderTop: '1px solid var(--border-subtle)',
-                    paddingTop: '20px',
-                    marginTop: '20px',
-                  }}
-                >
-                  <label
+                (selectedApproval.is_actionable === false ||
+                  (selectedApproval.run && selectedApproval.run.status !== 'awaiting_approval') ||
+                  (selectedApproval.run_status && selectedApproval.run_status !== 'awaiting_approval') ||
+                  (selectedApproval.ticket_status && selectedApproval.ticket_status !== 'pending_approval')) ? (
+                  <div
                     style={{
-                      display: 'block',
-                      fontSize: '12px',
-                      fontWeight: 600,
-                      color: '#cbd5e1',
-                      marginBottom: '6px',
+                      borderTop: '1px solid var(--border-subtle)',
+                      paddingTop: '20px',
+                      marginTop: '20px',
                     }}
                   >
-                    Supervisor Decision Note (Optional)
-                  </label>
-                  <textarea
-                    className="rf-textarea"
-                    rows={2}
-                    placeholder="Provide justification or context for this approval/rejection..."
-                    value={decisionNote}
-                    onChange={(e) => setDecisionNote(e.target.value)}
-                    style={{ marginBottom: '16px' }}
-                    disabled={!isAdmin || submittingAction}
-                  />
-
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '12px' }}>
-                    <button
-                      onClick={() => handleDecision('reject')}
-                      className="rf-btn rf-btn-danger"
-                      disabled={!isAdmin || submittingAction}
-                      style={{ padding: '8px 18px' }}
-                    >
-                      <XCircle size={15} />
-                      <span>{submittingAction ? 'Processing...' : 'Reject Action'}</span>
-                    </button>
-                    <button
-                      onClick={() => handleDecision('approve')}
-                      className="rf-btn rf-btn-primary"
-                      disabled={!isAdmin || submittingAction}
+                    <div
                       style={{
-                        padding: '8px 22px',
-                        backgroundColor: '#10b981',
-                        borderColor: '#059669',
+                        backgroundColor: 'rgba(239, 68, 68, 0.08)',
+                        border: '1px solid rgba(239, 68, 68, 0.3)',
+                        borderRadius: '8px',
+                        padding: '16px 20px',
                       }}
                     >
-                      <CheckCircle size={15} />
-                      <span>{submittingAction ? 'Processing...' : 'Approve & Execute Action'}</span>
-                    </button>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          color: '#f87171',
+                          fontWeight: 600,
+                          fontSize: '14px',
+                          marginBottom: '8px',
+                        }}
+                      >
+                        <AlertTriangle size={18} />
+                        <span>Approval Request Inactive (State Conflict)</span>
+                      </div>
+                      <p style={{ fontSize: '13px', color: '#cbd5e1', lineHeight: 1.5, marginBottom: '12px' }}>
+                        This approval request cannot be executed because its underlying agent run or ticket state is no longer awaiting approval.
+                        {selectedApproval.stale_reason ? ` (${selectedApproval.stale_reason})` : ''}
+                      </p>
+                      <div
+                        style={{
+                          fontSize: '12px',
+                          color: '#94a3b8',
+                          backgroundColor: 'var(--color-canvas)',
+                          padding: '10px 14px',
+                          borderRadius: '6px',
+                          marginBottom: '14px',
+                          display: 'grid',
+                          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                          gap: '8px',
+                        }}
+                      >
+                        <div>
+                          <strong>Agent Run Status:</strong>{' '}
+                          <span style={{ color: '#f8fafc', textTransform: 'capitalize' }}>
+                            {selectedApproval.run?.status || selectedApproval.run_status || 'unknown'}
+                          </span>
+                        </div>
+                        <div>
+                          <strong>Ticket Status:</strong>{' '}
+                          <span style={{ color: '#f8fafc', textTransform: 'capitalize' }}>
+                            {selectedApproval.ticket?.status || selectedApproval.ticket_status || 'unknown'}
+                          </span>
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+                        <span style={{ fontSize: '12px', color: '#64748b' }}>
+                          Audit history preserved for compliance. No execution permitted.
+                        </span>
+                        <button
+                          onClick={() => onSelectTicket(selectedApproval.ticket_id)}
+                          className="rf-btn rf-btn-secondary"
+                          style={{ padding: '6px 14px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                        >
+                          <ExternalLink size={13} />
+                          <span>Inspect Ticket Telemetry & History</span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div
+                    style={{
+                      borderTop: '1px solid var(--border-subtle)',
+                      paddingTop: '20px',
+                      marginTop: '20px',
+                    }}
+                  >
+                    <label
+                      style={{
+                        display: 'block',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        color: '#cbd5e1',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      Supervisor Decision Note (Optional)
+                    </label>
+                    <textarea
+                      className="rf-textarea"
+                      rows={2}
+                      placeholder="Provide justification or context for this approval/rejection..."
+                      value={decisionNote}
+                      onChange={(e) => setDecisionNote(e.target.value)}
+                      style={{ marginBottom: '16px' }}
+                      disabled={!isAdmin || submittingAction}
+                    />
+
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '12px' }}>
+                      <button
+                        onClick={() => handleDecision('reject')}
+                        className="rf-btn rf-btn-danger"
+                        disabled={!isAdmin || submittingAction}
+                        style={{ padding: '8px 18px' }}
+                      >
+                        <XCircle size={15} />
+                        <span>{submittingAction ? 'Processing...' : 'Reject Action'}</span>
+                      </button>
+                      <button
+                        onClick={() => handleDecision('approve')}
+                        className="rf-btn rf-btn-primary"
+                        disabled={!isAdmin || submittingAction}
+                        style={{
+                          padding: '8px 22px',
+                          backgroundColor: '#10b981',
+                          borderColor: '#059669',
+                        }}
+                      >
+                        <CheckCircle size={15} />
+                        <span>{submittingAction ? 'Processing...' : 'Approve & Execute Action'}</span>
+                      </button>
+                    </div>
+                  </div>
+                )
               )}
             </div>
           ) : null}

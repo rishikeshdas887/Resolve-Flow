@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.core.deps import Pagination, require_approver, require_staff
 from app.core.errors import ConflictError, NotFoundError
-from app.db.models import ApprovalRequest, ApprovalStatus, User
+from app.db.models import AgentRun, ApprovalRequest, ApprovalStatus, RunStatus, Ticket, TicketStatus, User
 from app.db.session import get_db
 from app.schemas.approvals import ApprovalDecision, ApprovalOut
 from app.schemas.common import Page, make_page
@@ -18,6 +18,36 @@ def _approval_or_404(db: Session, approval_id: str) -> ApprovalRequest:
     if ap is None:
         raise NotFoundError("Approval not found")
     return ap
+
+
+def _enrich_approval_out(db: Session, a: ApprovalRequest) -> ApprovalOut:
+    run = db.get(AgentRun, a.run_id)
+    ticket = db.get(Ticket, a.ticket_id)
+    run_status = run.status.value if run else None
+    ticket_status = ticket.status.value if ticket else None
+    stale_reason = None
+    if a.status == ApprovalStatus.pending:
+        if ticket is None or ticket.status != TicketStatus.pending_approval:
+            stale_reason = f"Ticket is {ticket_status or 'missing'} (not pending approval)"
+        elif run is None or run.status != RunStatus.awaiting_approval:
+            stale_reason = f"Run is {run_status or 'missing'} (not awaiting approval)"
+    is_actionable = a.status == ApprovalStatus.pending and stale_reason is None
+    return ApprovalOut(
+        id=a.id,
+        ticket_id=a.ticket_id,
+        run_id=a.run_id,
+        action_id=a.action_id,
+        reason=a.reason,
+        status=a.status.value,
+        reviewer_id=a.reviewer_id,
+        decision_note=a.decision_note,
+        decided_at=a.decided_at,
+        created_at=a.created_at,
+        run_status=run_status,
+        ticket_status=ticket_status,
+        is_actionable=is_actionable,
+        stale_reason=stale_reason,
+    )
 
 
 @router.get("", response_model=Page[ApprovalOut])
@@ -39,7 +69,7 @@ def list_approvals(
         .offset(pagination.offset).limit(pagination.size)
     ).scalars().all()
     return make_page(
-        [ApprovalOut.model_validate(a) for a in items],
+        [_enrich_approval_out(db, a) for a in items],
         total, pagination.page, pagination.size,
     )
 
@@ -50,7 +80,7 @@ def get_approval(
     db: Session = Depends(get_db),
     user: User = Depends(require_staff),
 ) -> ApprovalOut:
-    return ApprovalOut.model_validate(_approval_or_404(db, approval_id))
+    return _enrich_approval_out(db, _approval_or_404(db, approval_id))
 
 
 @router.post("/{approval_id}/approve", response_model=ApprovalOut)
@@ -63,7 +93,7 @@ def approve(
     ap = _approval_or_404(db, approval_id)
     decide_approval(db, ap, reviewer_id=user.id, approve=True, note=body.note if body else None)
     db.commit()
-    return ApprovalOut.model_validate(ap)
+    return _enrich_approval_out(db, ap)
 
 
 @router.post("/{approval_id}/reject", response_model=ApprovalOut)
@@ -76,4 +106,4 @@ def reject(
     ap = _approval_or_404(db, approval_id)
     decide_approval(db, ap, reviewer_id=user.id, approve=False, note=body.note if body else None)
     db.commit()
-    return ApprovalOut.model_validate(ap)
+    return _enrich_approval_out(db, ap)

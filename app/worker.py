@@ -117,7 +117,8 @@ def _pending_decision(db: Session, run: AgentRun) -> dict | None:
     approval = db.execute(
         select(ApprovalRequest)
         .where(ApprovalRequest.run_id == run.id)
-        .order_by(ApprovalRequest.created_at.desc())
+        .where(ApprovalRequest.status.in_([ApprovalStatus.approved, ApprovalStatus.rejected]))
+        .order_by(ApprovalRequest.decided_at.desc().nullslast(), ApprovalRequest.created_at.desc())
     ).scalars().first()
     if approval and approval.status == ApprovalStatus.approved:
         return {"decision": "approved", "reviewer_id": approval.reviewer_id}

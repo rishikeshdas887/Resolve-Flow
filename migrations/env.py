@@ -16,8 +16,14 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
-db_url = os.environ.get("DATABASE_URL")
+from app.core.config import get_settings  # noqa: E402
+
+db_url = os.environ.get("DATABASE_URL") or get_settings().database_url
 if db_url:
+    if db_url.startswith("postgres://"):
+        db_url = "postgresql+psycopg://" + db_url[len("postgres://"):]
+    elif db_url.startswith("postgresql://") and not db_url.startswith("postgresql+"):
+        db_url = "postgresql+psycopg://" + db_url[len("postgresql://"):]
     config.set_main_option("sqlalchemy.url", db_url)
 
 

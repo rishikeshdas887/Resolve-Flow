@@ -154,6 +154,10 @@ export interface ApprovalRequest {
   action?: ProposalAction;
   run?: AgentRun;
   ticket?: Ticket;
+  run_status?: string | null;
+  ticket_status?: string | null;
+  is_actionable?: boolean;
+  stale_reason?: string | null;
 }
 
 export interface TicketEvent {

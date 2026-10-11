@@ -166,3 +166,57 @@ def test_invalid_status_filters_return_4xx(client, agent_headers):
     assert resp.status_code == 409, resp.text
     resp = client.get("/api/v1/tickets?status=bogus", headers=agent_headers)
     assert resp.status_code == 409, resp.text
+
+
+def test_stale_approval_diagnostic_and_conflict_protection(
+    client, agent_headers, admin_headers, db, settings, deps, checkpointer
+):
+    """Regression test for single ticket approval conflict:
+    When an approval's run is no longer awaiting_approval (e.g., recovered or racing),
+    the approval record must be preserved, marked non-actionable with an explanatory
+    stale_reason in both detail and list APIs, and approval attempts must fail with 409
+    without mutating the preserved audit state."""
+    _t, approval = _pending_approval_ticket(client, agent_headers, db, settings, deps, checkpointer)
+    assert approval is not None and approval.status == ApprovalStatus.pending
+
+    # 1. Normal state: actionable and awaiting approval
+    resp = client.get(f"/api/v1/approvals/{approval.id}", headers=agent_headers)
+    assert resp.status_code == 200, resp.text
+    body = resp.json()
+    assert body["is_actionable"] is True
+    assert body["stale_reason"] is None
+    assert body["run_status"] == RunStatus.awaiting_approval.value
+    assert body["ticket_status"] == TicketStatus.pending_approval.value
+
+    # 2. Simulate worker race / stale state: run moved to 'running'
+    run = db.get(AgentRun, approval.run_id)
+    run.status = RunStatus.running
+    db.commit()
+
+    # 3. Read-only diagnostic verification: approval is preserved but non-actionable
+    resp = client.get(f"/api/v1/approvals/{approval.id}", headers=agent_headers)
+    assert resp.status_code == 200, resp.text
+    body = resp.json()
+    assert body["status"] == "pending"
+    assert body["is_actionable"] is False
+    assert body["run_status"] == "running"
+    assert "not awaiting approval" in body["stale_reason"]
+
+    # In list endpoint
+    list_resp = client.get("/api/v1/approvals", headers=agent_headers)
+    assert list_resp.status_code == 200, list_resp.text
+    items = list_resp.json()["items"]
+    matched = next((item for item in items if item["id"] == approval.id), None)
+    assert matched is not None
+    assert matched["is_actionable"] is False
+
+    # 4. Attempting to approve must fail with 409 Conflict
+    action_resp = client.post(f"/api/v1/approvals/{approval.id}/approve", headers=admin_headers)
+    assert action_resp.status_code == 409, action_resp.text
+    assert "Run is no longer awaiting approval" in action_resp.json()["error"]["message"]
+
+    # 5. Approval record remains intact (audit history preserved)
+    db.expire_all()
+    preserved = db.get(ApprovalRequest, approval.id)
+    assert preserved.status == ApprovalStatus.pending
+
