@@ -141,7 +141,12 @@ implemented but **not verified** — see `docs/KNOWN_LIMITATIONS.md`.
 The complete React 19 + TypeScript + Vite operations frontend (Google Stitch-inspired design) is located in `frontend/` and deployed to Vercel:
 
 - **Public Production Frontend URL**: [https://frontend-three-bice-94.vercel.app](https://frontend-three-bice-94.vercel.app)
-- **Direct Vercel Deployment**: [https://frontend-oos8pnhe9-rishidas887s-projects.vercel.app](https://frontend-oos8pnhe9-rishidas887s-projects.vercel.app)
+- **Live Production Backend API**: [https://resolve-flow-yrux.onrender.com](https://resolve-flow-yrux.onrender.com)
+  - API Health: [https://resolve-flow-yrux.onrender.com/health/ready](https://resolve-flow-yrux.onrender.com/health/ready)
+  - Interactive OpenAPI Swagger: [https://resolve-flow-yrux.onrender.com/docs](https://resolve-flow-yrux.onrender.com/docs)
+- **Demo Accounts**:
+  - Administrator: `admin@example.com` / `AdminPass123!`
+  - Support Agent: `agent@example.com` / `AgentPass123!`
 - **Local Dev Server**: `cd frontend && npm run dev` (http://localhost:5173)
 - **Automated Browser E2E Suite**: `cd frontend && npm run test:e2e`
 
