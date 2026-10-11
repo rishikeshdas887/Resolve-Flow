@@ -125,30 +125,33 @@ against a disposable `pgvector/pgvector:pg16` service:
 
 ## Verified results (latest run)
 
-- `pytest tests/ -q` — **75 passed**
-- `ruff check` — clean
-- `evaluate.py` — **32/32** eval cases pass (deterministic provider,
-  ~37 ms/case)
+- `pytest tests/ -q` — **76 passed** (including worker regression test)
+- `ruff check` — clean (all rules passed)
+- `evaluate.py` — **32/32** eval cases pass (deterministic provider, 100% case match across two independent runs)
+- `frontend/scripts/verify_browser_workflows.js` — **11/11 browser workflows PASS** (Puppeteer + Google Chrome, independently verified twice)
+- `oxlint` & `tsc -b && vite build` — clean (0 errors, built in ~960ms)
 - `alembic upgrade head` from empty DB — clean; downgrade + re-upgrade clean
-- `docker compose up --build` — end-to-end stack verified (ticket → run →
-  evidence → approval → resolve, restart-resumed)
+- `docker compose up --build` — end-to-end stack verified (ticket → run → evidence → approval → resolve, restart-resumed)
 
 Credentials-dependent paths (live OpenAI provider, Slack delivery) are
 implemented but **not verified** — see `docs/KNOWN_LIMITATIONS.md`.
 
-## Frontend integration
+## Frontend & Demo Deployment
 
-The React frontend (built separately) consumes the versioned `/api/v1`
-contract. `docs/FRONTEND_HANDOFF.md` documents every route, enum, error
-shape, and flow; `/openapi.json` is generated from the live schemas.
+The complete React 19 + TypeScript + Vite operations frontend (Google Stitch-inspired design) is located in `frontend/` and deployed to Vercel:
+
+- **Public Production Frontend URL**: [https://frontend-three-bice-94.vercel.app](https://frontend-three-bice-94.vercel.app)
+- **Direct Vercel Deployment**: [https://frontend-oos8pnhe9-rishidas887s-projects.vercel.app](https://frontend-oos8pnhe9-rishidas887s-projects.vercel.app)
+- **Local Dev Server**: `cd frontend && npm run dev` (http://localhost:5173)
+- **Automated Browser E2E Suite**: `cd frontend && npm run test:e2e`
 
 ## Docs
 
-- `docs/IMPLEMENTATION_PLAN.md` — phased build plan
+- `docs/LOCAL_REVERIFICATION_REPORT.md` — full two-round verification and browser evidence report
 - `docs/ARCHITECTURE.md` — modules, data model, workflow, safety design
 - `docs/FRONTEND_HANDOFF.md` — API contract notes for the Antigravity+Stitch frontend
 - `docs/ACCEPTANCE_CRITERIA.md` — definition of done, marked
-- `docs/VERIFICATION_REPORT.md` — real test/eval results
+- `docs/VERIFICATION_REPORT.md` — backend verification results
 - `docs/KNOWN_LIMITATIONS.md` — honest limitations
 
 ## Slack (optional)
