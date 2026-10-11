@@ -47,6 +47,10 @@ export class ApiClient {
     this.baseUrl = baseUrl.replace(/\/+$/, '');
   }
 
+  public getBaseUrl(): string {
+    return this.baseUrl;
+  }
+
   public getToken(): string | null {
     return localStorage.getItem(TOKEN_KEY);
   }
@@ -87,7 +91,17 @@ export class ApiClient {
       headers.set('Authorization', `Bearer ${token}`);
     }
 
-    const res = await fetch(url, { ...options, headers });
+    let res: Response;
+    try {
+      res = await fetch(url, { ...options, headers });
+    } catch (networkErr: any) {
+      throw new ApiError(
+        0,
+        'network_error',
+        `Network connection failed to ${url}. The backend API at ${this.baseUrl} is unreachable or offline.`,
+        { targetUrl: url, originalError: networkErr?.message }
+      );
+    }
 
     if (res.status === 204) {
       return null as unknown as T;
